@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Playlist Maker</string>
-    <string name="am_btn_search_name">Поиск</string>
     <string name="am_btn_media_library_name">Медиатека</string>
-    <string name="am_btn_settings_name">Настройки</string>
+    <string name="am_btn_search_name">Поиск</string>
     <string name="as_theme_dark">Темная тема</string>
+    <string name="am_btn_settings_name">Настройки</string>
     <string name="as_app_share">Поделиться приложением</string>
     <string name="as_write_support">Написать в поддержку</string>
-    <string name="as_user_agree">Пользовательское соглашение</string>
     <string name="as_back_settings">Назад</string>
+    <string name="as_user_agree">Пользовательское соглашение</string>
 </resources>

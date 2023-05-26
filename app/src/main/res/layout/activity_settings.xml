@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/as_color_bg"
+    android:orientation="vertical"
+    android:paddingTop="20dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/as_margin_left_head"
+        android:paddingEnd="16dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:src="@drawable/return_btn"
+            android:gravity="top" />
+
+        <TextView
+            android:id="@+id/asBtnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="28dp"
+            android:paddingEnd="0dp"
+            android:text="@string/am_btn_settings_name"
+            android:textColor="@color/as_color_head"
+            android:textSize="@dimen/as_size_head_txt" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="56dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:paddingStart="@dimen/as_margin_left_items"
+            android:paddingEnd="0dp"
+            android:text="@string/as_theme_dark"
+            android:textColor="@color/as_color_item"
+            android:textSize="@dimen/as_size_item_txt" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/asDarkThemeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:minHeight="48dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="18dp" />
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:paddingStart="@dimen/as_margin_left_items"
+            android:paddingEnd="0dp"
+            android:layout_marginStart="0dp"
+            android:text="@string/as_app_share"
+            android:textColor="@color/as_color_item"
+            android:textSize="@dimen/as_size_item_txt" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="34dp"
+            android:src="@drawable/share"
+            />
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:paddingStart="@dimen/as_margin_left_items"
+            android:paddingEnd="0dp"
+            android:text="@string/as_write_support"
+            android:textColor="@color/as_color_item"
+            android:textSize="@dimen/as_size_item_txt" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="34dp"
+            android:src="@drawable/light_mode"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:paddingStart="@dimen/as_margin_left_items"
+            android:paddingEnd="0dp"
+            android:text="@string/as_user_agree"
+            android:textColor="@color/as_color_item"
+            android:textSize="@dimen/as_size_item_txt" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="34dp"
+            android:src="@drawable/next_btn"/>
+    </FrameLayout>
+
+</LinearLayout>
