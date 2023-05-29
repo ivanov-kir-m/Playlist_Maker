@@ -18,13 +18,13 @@ class MainActivity : AppCompatActivity() {
         val amBtnSettingsId = findViewById<Button>(R.id.amBtnSettings)
 
         amBtnSearchId.setOnClickListener {
-            val activitySettingIntentOpen = Intent(this, SettingsActivity::class.java)
-            startActivity(activitySettingIntentOpen)
+            val activitySearchIntentOpen = Intent(this, SearchActivity::class.java)
+            startActivity(activitySearchIntentOpen)
         }
 
         amBtnMediaId.setOnClickListener {
-            val activitySettingIntentOpen = Intent(this, SettingsActivity::class.java)
-            startActivity(activitySettingIntentOpen)
+            val activityMediaIntentOpen = Intent(this, MediaActivity::class.java)
+            startActivity(activityMediaIntentOpen)
         }
 
         amBtnSettingsId.setOnClickListener {
