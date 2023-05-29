@@ -38,7 +38,7 @@
         app:cornerRadius="@dimen/am_btn_corner_radius"
         app:icon="@drawable/search"
         app:iconGravity="textStart"
-        app:iconPadding="10dp"
+        app:iconPadding="@dimen/as_icon_padding"
         app:iconTint="@color/black"
         tools:ignore="TextContrastCheck" />
 
@@ -57,7 +57,7 @@
         app:cornerRadius="@dimen/am_btn_corner_radius"
         app:icon="@drawable/music"
         app:iconGravity="textStart"
-        app:iconPadding="10dp"
+        app:iconPadding="@dimen/as_icon_padding"
         app:iconTint="@color/black"
         tools:ignore="TextContrastCheck" />
 
@@ -77,7 +77,7 @@
         app:cornerRadius="@dimen/am_btn_corner_radius"
         app:icon="@drawable/settings"
         app:iconGravity="textStart"
-        app:iconPadding="10dp"
+        app:iconPadding="@dimen/as_icon_padding"
         app:iconTint="@color/black"
         tools:ignore="TextContrastCheck" />
 </LinearLayout>

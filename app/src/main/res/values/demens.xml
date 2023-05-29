@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="am_btn_margin_left_right">17sp</dimen>
+    <dimen name="am_btn_margin_left_right">17dp</dimen>
     <dimen name="am_size_head_txt">22sp</dimen>
-    <dimen name="am_btn_corner_radius">16sp</dimen>
+    <dimen name="am_btn_corner_radius">16dp</dimen>
     <dimen name="as_size_head_txt">22sp</dimen>
     <dimen name="as_size_item_txt">16sp</dimen>
-    <dimen name="as_margin_left_head">20sp</dimen>
-    <dimen name="as_margin_left_items">16sp</dimen>
+    <dimen name="as_margin_left_head">20dp</dimen>
+    <dimen name="as_margin_left_items">16dp</dimen>
+    <dimen name="as_icon_padding">10dp</dimen>
 </resources>

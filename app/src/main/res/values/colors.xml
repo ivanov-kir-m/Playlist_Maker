@@ -13,4 +13,10 @@
     <color name="am_color_bg">#3772E7</color>
     <color name="am_color_btn_bg">#FFFFFF</color>
     <color name="am_color_btn_caption">#1A1B22</color>
+    <color name="d_music_color">#1A1B22</color>
+    <color name="d_support_color">#AEAFB4</color>
+    <color name="d_return_color">#1A1B22</color>
+    <color name="d_search_color">#1A1B22</color>
+    <color name="d_settings_color">#1A1B22</color>
+    <color name="d_share_color">#AEAFB4</color>
 </resources>

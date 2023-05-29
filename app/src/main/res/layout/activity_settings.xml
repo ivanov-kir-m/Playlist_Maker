@@ -88,7 +88,6 @@
         android:layout_height="61dp"
         android:orientation="horizontal"
         >
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,7 +104,7 @@
             android:layout_gravity="end|center_vertical"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="34dp"
-            android:src="@drawable/light_mode"
+            android:src="@drawable/support"
             />
     </FrameLayout>
 
@@ -131,7 +130,7 @@
             android:layout_gravity="end|center_vertical"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="34dp"
-            android:src="@drawable/next_btn"/>
+            android:src="@drawable/agreement"/>
     </FrameLayout>
 
 </LinearLayout>
