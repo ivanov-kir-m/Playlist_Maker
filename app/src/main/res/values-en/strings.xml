@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="am_btn_media_library_name">Mediateka</string>
+    <string name="am_btn_search_name">Search</string>
+    <string name="am_btn_settings_name">Settings</string>
+    <string name="as_theme_dark">Dark mode</string>
+    <string name="as_app_share">Share app</string>
+    <string name="as_write_support">Contact support</string>
+    <string name="as_back_settings">Back</string>
+    <string name="as_user_agree">User agreement</string>
+    <string name="am_btn_media_name">Media</string>
+</resources>

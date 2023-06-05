@@ -1,18 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@color/am_color_bg"
+    android:orientation="vertical"
+    android:paddingTop="14dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/am_size_head_txt" />
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/amBtnSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/am_btn_margin_left_right"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="@dimen/am_btn_margin_left_right"
+        android:layout_weight="1"
+        android:backgroundTint="@color/am_color_btn_bg"
+        android:text="@string/am_btn_search_name"
+        android:textColor="@color/am_color_btn_caption"
+        app:cornerRadius="@dimen/am_btn_corner_radius"
+        app:icon="@drawable/search"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/as_icon_padding"
+        app:iconTint="@color/black"
+        tools:ignore="TextContrastCheck" />
+
+    <Button
+        android:id="@+id/amBtnMedia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/am_btn_margin_left_right"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="@dimen/am_btn_margin_left_right"
+        android:layout_weight="1"
+        android:backgroundTint="@color/am_color_btn_bg"
+        android:text="@string/am_btn_media_library_name"
+        android:textColor="@color/am_color_btn_caption"
+        app:cornerRadius="@dimen/am_btn_corner_radius"
+        app:icon="@drawable/music"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/as_icon_padding"
+        app:iconTint="@color/black"
+        tools:ignore="TextContrastCheck" />
+
+    <Button
+        android:id="@+id/amBtnSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/am_btn_margin_left_right"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="@dimen/am_btn_margin_left_right"
+        android:layout_marginBottom="28dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/am_color_btn_bg"
+        android:text="@string/am_btn_settings_name"
+        android:textColor="@color/am_color_btn_caption"
+        app:cornerRadius="@dimen/am_btn_corner_radius"
+        app:icon="@drawable/settings"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/as_icon_padding"
+        app:iconTint="@color/black"
+        tools:ignore="TextContrastCheck" />
+</LinearLayout>
