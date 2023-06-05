@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,19 +19,21 @@ class MainActivity : AppCompatActivity() {
         val amBtnSettingsId = findViewById<Button>(R.id.amBtnSettings)
 
         amBtnSearchId.setOnClickListener {
-            val activitySearchIntentOpen = Intent(this, SearchActivity::class.java)
-            startActivity(activitySearchIntentOpen)
+            onButtonClick(SearchActivity::class.java)
         }
 
         amBtnMediaId.setOnClickListener {
-            val activityMediaIntentOpen = Intent(this, MediaActivity::class.java)
-            startActivity(activityMediaIntentOpen)
+            onButtonClick(MediaActivity::class.java)
         }
 
         amBtnSettingsId.setOnClickListener {
-            val activitySettingIntentOpen = Intent(this, SettingsActivity::class.java)
-            startActivity(activitySettingIntentOpen)
+            onButtonClick(SettingsActivity::class.java)
         }
 
+    }
+
+    private fun onButtonClick(targetClass: Class<out Activity>) {
+        val intent = Intent(this, targetClass)
+        startActivity(intent)
     }
 }
