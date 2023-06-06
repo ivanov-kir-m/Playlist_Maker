@@ -1,34 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/as_color_bg"
-    android:orientation="vertical"
-    android:paddingTop="20dp">
+    android:orientation="vertical">
 
-    <FrameLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/asBtnBack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/as_margin_left_head"
-        android:paddingEnd="16dp"
-        android:orientation="horizontal">
+        android:minHeight="@dimen/main_heigh"
+        android:paddingBottom="@dimen/padding_toolbar"
+        app:navigationIcon="@drawable/return_btn"
+        app:title="@string/search_msg" />
 
-        <ImageView
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_ident"
+        android:background="@drawable/ic_search_background"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/padding_search_frame">
+
+        <EditText
+            android:id="@+id/inputEditText"
+            style="@style/SearchTextEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/search"
+            android:drawableTint="?attr/colorSecondaryVariant"
+            android:hint="@string/search_msg"
+            android:inputType="text"
+            android:maxLines="1" />
+
+        <ImageView style="@style/SearchIcStyle"
+            android:id="@+id/clearIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
-            android:src="@drawable/return_btn"
-            android:gravity="top" />
-
-        <TextView
-            android:id="@+id/asBtnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="28dp"
-            android:paddingEnd="0dp"
-            android:text="@string/am_btn_search_name"
-            android:textColor="@color/as_color_head"
-            android:textSize="@dimen/as_size_head_txt" />
+            android:paddingStart="@dimen/padding_search_string"
+            android:layout_gravity="center"
+            android:src="@drawable/clear_btn"
+            android:visibility="gone" />
     </FrameLayout>
-
 </LinearLayout>
