@@ -33,16 +33,17 @@
         android:text="@string/as_app_share"
         app:drawableEndCompat="@drawable/share" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         style="@style/MenuItemsStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/main_ident"
+        android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/main_ident"
         android:id="@+id/asSupportButt"
         android:text="@string/as_write_support"
         app:drawableEndCompat="@drawable/support"/>
 
-    <TextView style="@style/MenuItemsStyle"
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/MenuItemsStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/main_heigh"
         android:paddingHorizontal="@dimen/main_ident"
