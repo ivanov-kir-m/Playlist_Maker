@@ -20,14 +20,16 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         //Назад
-        findViewById<androidx.appcompat.widget.Toolbar>(R.id.asBtnBack).setOnClickListener {
+        findViewById<androidx.appcompat.widget.Toolbar>(
+            R.id.asBtnBack
+        ).setNavigationOnClickListener {
             finish()
         }
 
         //Поделиться приложением
-        findViewById<TextView>(R.id.asShareBtn).setOnClickListener{
+        findViewById<TextView>(R.id.asShareBtn).setOnClickListener {
             Intent(Intent.ACTION_SEND).apply {
-                putExtra(Intent.EXTRA_TEXT,getString(R.string.url_practicum))
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.url_practicum))
                 type = "text/plain"
                 startActivity(this)
             }
