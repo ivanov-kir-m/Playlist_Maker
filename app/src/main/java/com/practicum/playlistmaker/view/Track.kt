@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,13 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-
-data class Track(
-    val trackName: String, // Название композиции
-    val artistName: String, // Имя исполнителя
-    val trackTime: String, // Продолжительность трека
-    val artworkUrl100: String // Ссылка на изображение обложки
-)
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.models.Track
 
 class TracksViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(
@@ -45,20 +40,4 @@ class TracksViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
             )
             .into(artwork)
     }
-}
-
-class TracksAdapter(
-    private val tracks: List<Track>
-) : RecyclerView.Adapter<TracksViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TracksViewHolder {
-        return TracksViewHolder(parent)
-    }
-
-    override fun onBindViewHolder(holder: TracksViewHolder, position: Int) {
-        holder.bind(tracks[position])
-    }
-
-    override fun getItemCount(): Int = tracks.size
-
 }
