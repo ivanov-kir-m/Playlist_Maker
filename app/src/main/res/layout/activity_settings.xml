@@ -36,7 +36,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/MenuItemsStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/main_heigh"
         android:paddingHorizontal="@dimen/main_ident"
         android:id="@+id/asSupportButt"
         android:text="@string/as_write_support"

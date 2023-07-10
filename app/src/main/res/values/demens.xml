@@ -3,13 +3,14 @@
     <dimen name="am_btn_margin_left_right">17dp</dimen>
     <dimen name="size_head_txt">22sp</dimen>
     <dimen name="size_item_txt">16sp</dimen>
-    <dimen name="as_margin_left_head">20dp</dimen>
-    <dimen name="as_margin_left_items">16dp</dimen>
     <dimen name="btn_corner_radius">16dp</dimen>
     <dimen name="icon_padding">10dp</dimen>
     <dimen name="main_ident">16dp</dimen>
     <dimen name="main_heigh">60dp</dimen>
     <dimen name="padding_search_string">8dp</dimen>
     <dimen name="padding_search_frame">12dp</dimen>
-    <dimen name="padding_toolbar">20dp</dimen>
+    <dimen name="padding_toolbar">22dp</dimen>
+    <dimen name="default_art_size">45dp</dimen>
+    <dimen name="artist_text_size">10sp</dimen>
+    <dimen name="default_art_radius">2dp</dimen>
 </resources>

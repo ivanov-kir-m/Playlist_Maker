@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.activity
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
+import com.practicum.playlistmaker.R
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -20,14 +21,16 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         //Назад
-        findViewById<androidx.appcompat.widget.Toolbar>(R.id.asBtnBack).setOnClickListener {
+        findViewById<androidx.appcompat.widget.Toolbar>(
+            R.id.asBtnBack
+        ).setNavigationOnClickListener {
             finish()
         }
 
         //Поделиться приложением
-        findViewById<TextView>(R.id.asShareBtn).setOnClickListener{
+        findViewById<TextView>(R.id.asShareBtn).setOnClickListener {
             Intent(Intent.ACTION_SEND).apply {
-                putExtra(Intent.EXTRA_TEXT,getString(R.string.url_practicum))
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.url_practicum))
                 type = "text/plain"
                 startActivity(this)
             }
