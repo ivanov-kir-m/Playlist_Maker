@@ -12,11 +12,11 @@
         android:layout_height="wrap_content"
         android:minHeight="@dimen/main_heigh"
         app:navigationIcon="@drawable/return_btn"
-        app:subtitleTextColor="@color/color_bg_dark"
+        app:subtitleTextColor="@android:color/primary_text_dark"
         app:title="@string/am_btn_settings_name"
         android:paddingBottom="@dimen/padding_toolbar"/>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         style="@style/SwitchStyle"
         android:id="@+id/asDarkThemeSwch"
         android:layout_width="match_parent"

@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
+import com.google.android.material.switchmaterial.SwitchMaterial
+import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.R
 
 
@@ -63,13 +63,10 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         //Смена темы
-        findViewById<SwitchCompat>(R.id.asDarkThemeSwch).setOnCheckedChangeListener {
-                _, isChecked ->
-                if (isChecked) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.asDarkThemeSwch)
+        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
         }
     }
 }

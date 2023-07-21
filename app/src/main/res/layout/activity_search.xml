@@ -14,41 +14,76 @@
         app:navigationIcon="@drawable/return_btn"
         app:title="@string/search_msg" />
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_ident"
-        android:background="@drawable/ic_search_background"
         android:layout_marginBottom="@dimen/padding_toolbar"
+        android:background="@drawable/ic_search_background"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
         android:padding="@dimen/padding_search_frame">
+
 
         <EditText
             android:id="@+id/inputEditText"
             style="@style/SearchTextEdit"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:drawableStart="@drawable/search"
-            android:drawableTint="?attr/colorSecondaryVariant"
+            android:drawableTint="@color/items_color"
             android:hint="@string/search_msg"
             android:autofillHints="search_str"
+            android:imeOptions="actionDone"
             android:inputType="text"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:singleLine="true" />
 
-        <ImageView style="@style/SearchIcn"
+        <ImageView
             android:id="@+id/clearIcon"
+            style="@style/DefaultIcn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/padding_search_string"
             android:layout_gravity="center"
+            android:paddingStart="@dimen/padding_search_string"
             android:src="@drawable/clear_btn"
             android:visibility="gone" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackSearchRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <FrameLayout android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trackSearchRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout android:id="@+id/error_ph"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/error_icn_ph"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_no_connection"/>
+            <TextView style="@style/ErrorTextPH"
+                android:id="@+id/error_text_ph"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_toolbar"
+                android:text="@string/no_connection_msg" />
+            <com.google.android.material.button.MaterialButton
+                style="@style/RefreshButtPH"
+                android:id="@+id/refresh_butt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/refresh_btn"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </FrameLayout>
 </LinearLayout>

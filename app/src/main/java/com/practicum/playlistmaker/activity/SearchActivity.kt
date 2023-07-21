@@ -1,18 +1,26 @@
 package com.practicum.playlistmaker.activity
 
+import ItunesApi
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.models.Track
 import com.practicum.playlistmaker.addappters.TracksAdapter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import android.view.inputmethod.EditorInfo
+import com.practicum.playlistmaker.models.TrackResponse
 
 class SearchActivity : AppCompatActivity() {
 
@@ -20,45 +28,37 @@ class SearchActivity : AppCompatActivity() {
         const val SEARCH_TEXT = "search_text"
     }
 
+    enum class StateType {
+        CONNECTION_ERROR, NOT_FOUND, SEARCH_RESULT
+    }
+
     private var searchEditText : String = ""
+
+    private val itunesBaseUrl = "https://itunes.apple.com"
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(itunesBaseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    private val itunesService = retrofit.create(ItunesApi::class.java)
+
+    private val searchTrackList = ArrayList<Track>()
+    private val trackAdapter = TracksAdapter(searchTrackList)
 
     private lateinit var inputEditText  : EditText
     private lateinit var clearBtn : ImageView
     private lateinit var recyclerViewTrack : RecyclerView
-    private lateinit var trackAdapter : TracksAdapter
+    private lateinit var refreshButtPh : Button
+    private lateinit var errorTextPh : TextView
+    private lateinit var errorIcPh : ImageView
+    private lateinit var errorPh: LinearLayout
 
-    private val searchTrackList: List<Track> = listOf(
-        Track(
-        "Smells Like Teen Spirit",
-        "Nirvana",
-        "5:01",
-        "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"
-        ),
-        Track(
-        "Billie Jean",
-        "Michael Jackson",
-        "4:35",
-        "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/3d/9d/38/3d9d3811-71f0-3a0e-1ada-3004e56ff852/827969428726.jpg/100x100bb.jpg"
-        ),
-        Track(
-        "Stayin' Alive",
-        "Bee Gees",
-        "4:10",
-        "https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/1f/80/1f/1f801fc1-8c0f-ea3e-d3e5-387c6619619e/16UMGIM86640.rgb.jpg/100x100bb.jpg"
-        ),
-        Track(
-        "Whole Lotta Love",
-        "Led Zeppelin",
-        "5:33",
-        "https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/7e/17/e3/7e17e33f-2efa-2a36-e916-7f808576cf6b/mzm.fyigqcbs.jpg/100x100bb.jpg"
-        ),
-        Track(
-        "Sweet Child O'Mine",
-        "Guns N' Roses",
-        "5:03",
-        "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"
-        ),
-    )
+    private fun clearBtnVisibility(s: CharSequence?): Int {
+        return if (s.isNullOrEmpty()) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+    }
 
     private val searchTextWatcher = object  : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -83,37 +83,56 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setText(searchEditText)
 
     }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
 
-        recyclerViewTrack = findViewById<RecyclerView>(R.id.trackSearchRecycler)
-        recyclerViewTrack.layoutManager = LinearLayoutManager(this)
-        trackAdapter = TracksAdapter(searchTrackList)
-        recyclerViewTrack.adapter = trackAdapter
-
-        inputEditText = findViewById(R.id.inputEditText)
-        inputEditText.addTextChangedListener(searchTextWatcher)
-
-        clearBtn = findViewById(R.id.clearIcon)
-        clearBtn.visibility = clearBtnVisibility(inputEditText.text)
-        clearBtn.setOnClickListener {
-            clearSearch()
-        }
-
-        findViewById<androidx.appcompat.widget.Toolbar>(
-            R.id.asBtnBack
-        ).setNavigationOnClickListener {
-            finish()
+    private fun showState(stateType: StateType){
+        when(stateType){
+            StateType.CONNECTION_ERROR -> {
+                recyclerViewTrack.visibility = View.GONE
+                errorPh.visibility = View.VISIBLE
+                refreshButtPh.visibility = View.VISIBLE
+                errorIcPh.setImageResource(R.drawable.ic_no_connection)
+                errorTextPh.setText(R.string.no_connection_msg)
+            }
+            StateType.NOT_FOUND -> {
+                recyclerViewTrack.visibility = View.GONE
+                errorPh.visibility = View.VISIBLE
+                refreshButtPh.visibility = View.GONE
+                errorIcPh.setImageResource(R.drawable.ic_not_found)
+                errorTextPh.setText(R.string.not_found_msg)
+            }
+            StateType.SEARCH_RESULT -> {
+                recyclerViewTrack.visibility = View.VISIBLE
+                errorPh.visibility = View.GONE
+                refreshButtPh.visibility = View.GONE
+            }
         }
 
     }
 
-    private fun clearBtnVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
+    private fun searchTrackList() {
+        if (inputEditText.text.isNotEmpty()) {
+            Log.i("search","Search ${inputEditText.text}")
+            itunesService.search(inputEditText.text.toString())
+                .enqueue(object : Callback<TrackResponse> {
+                    override fun onResponse(
+                        call: Call<TrackResponse>,
+                        response: Response<TrackResponse>
+                    ) {
+                        Log.i("search","Resp code ${response.code()}")
+                        if (response.code() == 200) {
+                            searchTrackList.clear()
+                            if (response.body()?.results?.isNotEmpty() == true) {
+                                searchTrackList.addAll(response.body()?.results!!)
+                                trackAdapter.notifyDataSetChanged()
+                                showState(StateType.SEARCH_RESULT)
+                            } else showState(StateType.NOT_FOUND)
+                        } else showState(StateType.CONNECTION_ERROR)
+                    }
+
+                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                        showState(StateType.CONNECTION_ERROR) //показывать плейсхолдер с ошибкой
+                    }
+                })
         }
     }
 
@@ -125,5 +144,46 @@ class SearchActivity : AppCompatActivity() {
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
             view.clearFocus()
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_search)
+
+        recyclerViewTrack = findViewById<RecyclerView>(R.id.trackSearchRecycler)
+        recyclerViewTrack.layoutManager = LinearLayoutManager(this)
+        recyclerViewTrack.adapter = trackAdapter
+
+        inputEditText = findViewById(R.id.inputEditText)
+        inputEditText.addTextChangedListener(searchTextWatcher)
+        inputEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                searchTrackList()
+                true
+            }
+            false
+        }
+
+        clearBtn = findViewById(R.id.clearIcon)
+        clearBtn.visibility = clearBtnVisibility(inputEditText.text)
+        clearBtn.setOnClickListener {
+            clearSearch()
+        }
+
+
+        findViewById<androidx.appcompat.widget.Toolbar>(
+            R.id.asBtnBack
+        ).setNavigationOnClickListener {
+            finish()
+        }
+        refreshButtPh = findViewById(R.id.refresh_butt)
+        refreshButtPh.setOnClickListener{
+            searchTrackList()
+        }
+
+        errorIcPh = findViewById(R.id.error_icn_ph)
+        errorTextPh = findViewById(R.id.error_text_ph)
+        errorPh = findViewById(R.id.error_ph)
+
     }
 }

@@ -14,4 +14,7 @@
     <string name="url_practicum" translatable="false">https://practicum.yandex.ru/profile/android-developer/</string>
     <string name="support_email" translatable="false">ivanov-kir-m+support@yandex.ru</string>
     <string name="support_theme_msg">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="no_connection_msg">Проблемы со связью\\n\\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="not_found_msg">Ничего не нашлось</string>
+    <string name="refresh_btn">" Обновить"</string>
 </resources>
