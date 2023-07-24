@@ -138,6 +138,8 @@ class SearchActivity : AppCompatActivity() {
 
     private fun clearSearch() {
         inputEditText.setText("")
+        searchTrackList.clear()
+        trackAdapter.notifyDataSetChanged()
         val view = this.currentFocus
         if (view != null) {
             val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -146,14 +148,13 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
-
+    private fun initRecycler() {
         recyclerViewTrack = findViewById<RecyclerView>(R.id.trackSearchRecycler)
         recyclerViewTrack.layoutManager = LinearLayoutManager(this)
         recyclerViewTrack.adapter = trackAdapter
+    }
 
+    private fun initSearchInput() {
         inputEditText = findViewById(R.id.inputEditText)
         inputEditText.addTextChangedListener(searchTextWatcher)
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -163,23 +164,39 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+    }
 
+    private fun initClearBtn() {
         clearBtn = findViewById(R.id.clearIcon)
         clearBtn.visibility = clearBtnVisibility(inputEditText.text)
         clearBtn.setOnClickListener {
             clearSearch()
         }
+    }
 
+    private fun initRefreshBtn() {
+        refreshButtPh = findViewById(R.id.refresh_butt)
+        refreshButtPh.setOnClickListener{
+            searchTrackList()
+        }
+    }
 
+    private fun setActionBtnBack() {
         findViewById<androidx.appcompat.widget.Toolbar>(
             R.id.asBtnBack
         ).setNavigationOnClickListener {
             finish()
         }
-        refreshButtPh = findViewById(R.id.refresh_butt)
-        refreshButtPh.setOnClickListener{
-            searchTrackList()
-        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_search)
+        initRecycler()
+        initSearchInput()
+        initClearBtn()
+        initRefreshBtn()
+        setActionBtnBack()
 
         errorIcPh = findViewById(R.id.error_icn_ph)
         errorTextPh = findViewById(R.id.error_text_ph)
