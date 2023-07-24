@@ -84,27 +84,33 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+    private fun onConnectionError(){
+        recyclerViewTrack.visibility = View.GONE
+        errorPh.visibility = View.VISIBLE
+        refreshButtPh.visibility = View.VISIBLE
+        errorIcPh.setImageResource(R.drawable.ic_no_connection)
+        errorTextPh.setText(R.string.no_connection_msg)
+    }
+
+    private fun onNotFoundError(){
+        recyclerViewTrack.visibility = View.GONE
+        errorPh.visibility = View.VISIBLE
+        refreshButtPh.visibility = View.GONE
+        errorIcPh.setImageResource(R.drawable.ic_not_found)
+        errorTextPh.setText(R.string.not_found_msg)
+    }
+
+    private fun onNSearchResult(){
+        recyclerViewTrack.visibility = View.VISIBLE
+        errorPh.visibility = View.GONE
+        refreshButtPh.visibility = View.GONE
+    }
+
     private fun showState(stateType: StateType){
         when(stateType){
-            StateType.CONNECTION_ERROR -> {
-                recyclerViewTrack.visibility = View.GONE
-                errorPh.visibility = View.VISIBLE
-                refreshButtPh.visibility = View.VISIBLE
-                errorIcPh.setImageResource(R.drawable.ic_no_connection)
-                errorTextPh.setText(R.string.no_connection_msg)
-            }
-            StateType.NOT_FOUND -> {
-                recyclerViewTrack.visibility = View.GONE
-                errorPh.visibility = View.VISIBLE
-                refreshButtPh.visibility = View.GONE
-                errorIcPh.setImageResource(R.drawable.ic_not_found)
-                errorTextPh.setText(R.string.not_found_msg)
-            }
-            StateType.SEARCH_RESULT -> {
-                recyclerViewTrack.visibility = View.VISIBLE
-                errorPh.visibility = View.GONE
-                refreshButtPh.visibility = View.GONE
-            }
+            StateType.CONNECTION_ERROR -> onConnectionError()
+            StateType.NOT_FOUND -> onNotFoundError()
+            StateType.SEARCH_RESULT -> onNSearchResult()
         }
 
     }
