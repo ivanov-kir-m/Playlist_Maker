@@ -83,7 +83,7 @@
     </style>
 
     <style name="DefaultIcn">
-        <item name="tint">@color/menu_items_color</item>
+        <item name="tint">@color/default_icn</item>
         <item name="android:background">@null</item>
     </style>
 

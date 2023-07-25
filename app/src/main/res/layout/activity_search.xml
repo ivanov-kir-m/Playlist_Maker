@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableStart="@drawable/search"
-            android:drawableTint="@color/items_color"
+            android:drawableTint="@color/default_icn"
             android:hint="@string/search_msg"
             android:autofillHints="search_str"
             android:imeOptions="actionDone"
