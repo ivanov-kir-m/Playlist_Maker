@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.models.Track
+import com.practicum.playlistmaker.utils.DateUtils
 
 class TracksViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(
@@ -24,18 +25,16 @@ class TracksViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     private val trackTime: TextView = itemView.findViewById(R.id.trackTimeText)
     private val artwork: ImageView = itemView.findViewById(R.id.artwork)
 
-    fun bind(model: Track) {
+    fun bind(model : Track){
         trackName.text = model.trackName
         artistName.text = model.artistName
-        trackTime.text = model.trackTime
+        trackTime.text = DateUtils.millisToStrFormat(model.trackTimeMillis)
         Glide.with(itemView)
             .load(model.artworkUrl100)
             .placeholder(R.drawable.default_art)
             .transform(
                 RoundedCorners(
-                    itemView.resources.getDimensionPixelSize(
-                        R.dimen.default_art_radius
-                    )
+                    itemView.resources.getDimensionPixelSize(R.dimen.default_art_radius)
                 )
             )
             .into(artwork)

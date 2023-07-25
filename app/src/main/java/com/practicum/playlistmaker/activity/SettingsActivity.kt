@@ -8,25 +8,23 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
+import com.google.android.material.switchmaterial.SwitchMaterial
+import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.R
 
 
 class SettingsActivity : AppCompatActivity() {
 
-    @SuppressLint("ApplySharedPref")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-
+    private fun setActionBtnBack() {
         //Назад
         findViewById<androidx.appcompat.widget.Toolbar>(
             R.id.asBtnBack
         ).setNavigationOnClickListener {
             finish()
         }
+    }
 
+    private fun setActionBtnShare() {
         //Поделиться приложением
         findViewById<TextView>(R.id.asShareBtn).setOnClickListener {
             Intent(Intent.ACTION_SEND).apply {
@@ -35,7 +33,9 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(this)
             }
         }
+    }
 
+    private fun setActionBtnSupport() {
         //Написать в поддержку
         findViewById<TextView>(R.id.asSupportButt).setOnClickListener {
             Intent(Intent.ACTION_SENDTO).apply {
@@ -51,7 +51,9 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
+    private fun setActionBtnAgreement() {
         //Пользовательское соглашение
         findViewById<TextView>(R.id.asUserAgreeBtn).setOnClickListener{
             startActivity(
@@ -61,15 +63,26 @@ class SettingsActivity : AppCompatActivity() {
                 )
             )
         }
+    }
 
+
+    private fun initThemeSwitcher() {
         //Смена темы
-        findViewById<SwitchCompat>(R.id.asDarkThemeSwch).setOnCheckedChangeListener {
-                _, isChecked ->
-                if (isChecked) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.asDarkThemeSwch)
+        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
         }
+    }
+
+    @SuppressLint("ApplySharedPref")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_settings)
+        setActionBtnBack()
+        setActionBtnShare()
+        setActionBtnSupport()
+        setActionBtnAgreement()
+        initThemeSwitcher()
     }
 }

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:minHeight="@dimen/main_heigh"
         app:navigationIcon="@drawable/return_btn"
-        app:subtitleTextColor="@color/color_bg_dark"
+        app:subtitleTextColor="@color/art_bg"
         app:title="@string/am_btn_media_name"
         android:paddingBottom="@dimen/padding_toolbar"/>
 </LinearLayout>
