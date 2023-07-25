@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.apps
 
 import android.app.Application
 import android.content.Context
@@ -41,7 +41,7 @@ class App : Application() {
         )
     }
 
-    private fun Context.isDarkThemeOn() = resources.configuration.uiMode and
+    private fun isDarkThemeOn() = resources.configuration.uiMode and
             Configuration.UI_MODE_NIGHT_MASK == UI_MODE_NIGHT_YES
 
 }

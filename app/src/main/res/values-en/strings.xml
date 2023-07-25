@@ -13,4 +13,6 @@
     <string name="no_connection_msg">Сonnection problems\\n\\nThe upload failed. Check your internet connection</string>
     <string name="not_found_msg">Not found</string>
     <string name="refresh_btn">Refresh</string>
+    <string name="search_title">You found:</string>
+    <string name="clear_history_btn">Clear history</string>
 </resources>

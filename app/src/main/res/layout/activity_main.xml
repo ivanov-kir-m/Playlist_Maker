@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSecondary"
     android:orientation="vertical"
-    android:padding="@dimen/main_ident">
+    android:padding="@dimen/main_indent">
 
     <TextView
         style="@style/MainTitleStyle"

@@ -14,6 +14,11 @@ class MainActivity : AppCompatActivity() {
         setListeners()
     }
 
+    private fun onButtonClick(targetClass: Class<out Activity>) {
+        val intent = Intent(this, targetClass)
+        startActivity(intent)
+    }
+
     private fun setListeners() {
         val amBtnSearchId = findViewById<Button>(R.id.amBtnSearch)
         val amBtnMediaId = findViewById<Button>(R.id.amBtnMedia)
@@ -31,10 +36,5 @@ class MainActivity : AppCompatActivity() {
             onButtonClick(SettingsActivity::class.java)
         }
 
-    }
-
-    private fun onButtonClick(targetClass: Class<out Activity>) {
-        val intent = Intent(this, targetClass)
-        startActivity(intent)
     }
 }

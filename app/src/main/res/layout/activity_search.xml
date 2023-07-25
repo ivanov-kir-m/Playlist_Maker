@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +10,7 @@
         android:id="@+id/asBtnBack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/main_heigh"
+        android:minHeight="@dimen/main_height"
         android:paddingBottom="@dimen/padding_toolbar"
         app:navigationIcon="@drawable/return_btn"
         app:title="@string/search_msg" />
@@ -18,7 +19,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/main_ident"
+        android:layout_marginHorizontal="@dimen/main_indent"
         android:layout_marginBottom="@dimen/padding_toolbar"
         android:background="@drawable/ic_search_background"
         android:orientation="horizontal"
@@ -33,6 +34,7 @@
             android:layout_weight="1"
             android:drawableStart="@drawable/search"
             android:drawableTint="@color/default_icn"
+            android:drawablePadding="@dimen/padding_search_string"
             android:hint="@string/search_msg"
             android:autofillHints="search_str"
             android:imeOptions="actionDone"
@@ -51,20 +53,54 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <FrameLayout android:layout_width="match_parent"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/trackSearchRecycler"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
 
-        <LinearLayout android:id="@+id/error_ph"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:visibility="gone">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/history_title"
+                    style="@style/SearchTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/padding_search_string"
+                    android:text="@string/search_title"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/trackSearchRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clear_history_btn"
+                    style="@style/RefreshBtnPH"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/padding_toolbar"
+                    android:minHeight="36dp"
+                    android:text="@string/clear_history_btn"
+                    android:visibility="gone" />
+            </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/error_ph"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
             <ImageView
                 android:id="@+id/error_icn_ph"
                 android:layout_width="wrap_content"
@@ -77,8 +113,8 @@
                 android:padding="@dimen/padding_toolbar"
                 android:text="@string/no_connection_msg" />
             <com.google.android.material.button.MaterialButton
-                style="@style/RefreshButtPH"
-                android:id="@+id/refresh_butt"
+                style="@style/RefreshBtnPH"
+                android:id="@+id/refresh_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/refresh_btn"
