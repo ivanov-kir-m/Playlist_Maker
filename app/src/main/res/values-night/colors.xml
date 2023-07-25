@@ -6,7 +6,7 @@
     <color name="color_bg_sub">#FFFFFFFF</color>
     <color name="color_bg_sub2">#FFFFFFFF</color>
     <color name="as_color_item">#000000</color>
-    <color name="menu_items_color">#FFFFFFFF</color>
+    <color name="menu_items_color">#AEAFB4</color>
     <color name="items_color">#AEAFB4</color>
     <color name="items_color_sub">#FF000000</color>
     <color name="color_status_bar">#1A1B22</color>
