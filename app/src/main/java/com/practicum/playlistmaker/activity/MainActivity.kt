@@ -20,19 +20,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setListeners() {
-        val amBtnSearchId = findViewById<Button>(R.id.amBtnSearch)
-        val amBtnMediaId = findViewById<Button>(R.id.amBtnMedia)
-        val amBtnSettingsId = findViewById<Button>(R.id.amBtnSettings)
+        val searchBtnId = findViewById<Button>(R.id.searchBtn)
+        val mediaBtn = findViewById<Button>(R.id.mediaBtn)
+        val settingsBtn = findViewById<Button>(R.id.settingsBtn)
 
-        amBtnSearchId.setOnClickListener {
+        searchBtnId.setOnClickListener {
             onButtonClick(SearchActivity::class.java)
         }
 
-        amBtnMediaId.setOnClickListener {
+        mediaBtn.setOnClickListener {
             onButtonClick(MediaActivity::class.java)
         }
 
-        amBtnSettingsId.setOnClickListener {
+        settingsBtn.setOnClickListener {
             onButtonClick(SettingsActivity::class.java)
         }
 

@@ -12,19 +12,19 @@
         android:text="@string/app_name" />
 
     <Button
-        android:id="@+id/amBtnSearch"
+        android:id="@+id/searchBtn"
         style="@style/ButtonMainStyle"
         android:text="@string/search_msg"
         app:icon="@drawable/search" />
 
     <Button
-        android:id="@+id/amBtnMedia"
+        android:id="@+id/mediaBtn"
         style="@style/ButtonMainStyle"
         android:text="@string/am_btn_media_library_name"
         app:icon="@drawable/music" />
 
     <Button
-        android:id="@+id/amBtnSettings"
+        android:id="@+id/settingsBtn"
         style="@style/ButtonMainStyle"
         android:text="@string/am_btn_settings_name"
         app:icon="@drawable/settings" />

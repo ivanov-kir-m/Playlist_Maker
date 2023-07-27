@@ -53,9 +53,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText  : EditText
     private lateinit var clearBtn : ImageView
     private lateinit var recyclerViewTrack : RecyclerView
-    private lateinit var refreshBtnPh : Button
-    private lateinit var errorTextPh : TextView
-    private lateinit var errorIcPh : ImageView
+    private lateinit var refreshBtn : Button
+    private lateinit var errorText : TextView
+    private lateinit var errorIcn : ImageView
     private lateinit var errorPh: LinearLayout
     private lateinit var clearHistoryButton: Button
     private lateinit var titleHistory: TextView
@@ -108,9 +108,9 @@ class SearchActivity : AppCompatActivity() {
     private fun onConnectionError(){
         recyclerViewTrack.visibility = View.GONE
         errorPh.visibility = View.VISIBLE
-        refreshBtnPh.visibility = View.VISIBLE
-        errorIcPh.setImageResource(R.drawable.ic_no_connection)
-        errorTextPh.setText(R.string.no_connection_msg)
+        refreshBtn.visibility = View.VISIBLE
+        errorIcn.setImageResource(R.drawable.ic_no_connection)
+        errorText.setText(R.string.no_connection_msg)
         titleHistory.visibility = View.GONE
         clearHistoryButton.visibility = View.GONE
     }
@@ -118,9 +118,9 @@ class SearchActivity : AppCompatActivity() {
     private fun onNotFoundError(){
         recyclerViewTrack.visibility = View.GONE
         errorPh.visibility = View.VISIBLE
-        refreshBtnPh.visibility = View.GONE
-        errorIcPh.setImageResource(R.drawable.ic_not_found)
-        errorTextPh.setText(R.string.not_found_msg)
+        refreshBtn.visibility = View.GONE
+        errorIcn.setImageResource(R.drawable.ic_not_found)
+        errorText.setText(R.string.not_found_msg)
         titleHistory.visibility = View.GONE
         clearHistoryButton.visibility = View.GONE
     }
@@ -130,7 +130,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerViewTrack.adapter = trackAdapter
         recyclerViewTrack.visibility = View.VISIBLE
         errorPh.visibility = View.GONE
-        refreshBtnPh.visibility = View.GONE
+        refreshBtn.visibility = View.GONE
         titleHistory.visibility = View.GONE
         clearHistoryButton.visibility = View.GONE
     }
@@ -140,7 +140,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerViewTrack.adapter = historyTrackAdapter
         recyclerViewTrack.visibility = View.VISIBLE
         errorPh.visibility = View.GONE
-        refreshBtnPh.visibility = View.GONE
+        refreshBtn.visibility = View.GONE
         titleHistory.visibility = View.VISIBLE
         clearHistoryButton.visibility = View.VISIBLE
     }
@@ -234,8 +234,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initRefreshBtn() {
-        refreshBtnPh = findViewById(R.id.refresh_btn)
-        refreshBtnPh.setOnClickListener{
+        refreshBtn = findViewById(R.id.refresh_btn)
+        refreshBtn.setOnClickListener{
             searchTrackList()
         }
     }
@@ -251,8 +251,8 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        errorIcPh = findViewById(R.id.error_icn_ph)
-        errorTextPh = findViewById(R.id.error_text_ph)
+        errorIcn = findViewById(R.id.error_icn_ph)
+        errorText = findViewById(R.id.error_text_ph)
         errorPh = findViewById(R.id.error_ph)
         titleHistory = findViewById(R.id.history_title)
         initSearchHistory()

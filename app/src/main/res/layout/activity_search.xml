@@ -83,7 +83,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/clear_history_btn"
-                    style="@style/RefreshBtnPH"
+                    style="@style/refreshBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -106,14 +106,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_no_connection"/>
-            <TextView style="@style/ErrorTextPH"
+            <TextView style="@style/errorText"
                 android:id="@+id/error_text_ph"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_toolbar"
                 android:text="@string/no_connection_msg" />
             <com.google.android.material.button.MaterialButton
-                style="@style/RefreshBtnPH"
+                style="@style/refreshBtn"
                 android:id="@+id/refresh_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
