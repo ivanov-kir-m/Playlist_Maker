@@ -1,10 +1,8 @@
 package com.practicum.playlistmaker.activity
 
-import ItunesApi
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -21,6 +19,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.view.inputmethod.EditorInfo
 import com.practicum.playlistmaker.models.TrackResponse
+import com.practicum.playlistmaker.apps.App.Companion.APP_SETTINGS
+import com.practicum.playlistmaker.models.SearchHistory
+import com.practicum.playlistmaker.utils.ItunesApi
 
 class SearchActivity : AppCompatActivity() {
 
@@ -29,7 +30,10 @@ class SearchActivity : AppCompatActivity() {
     }
 
     enum class StateType {
-        CONNECTION_ERROR, NOT_FOUND, SEARCH_RESULT
+        CONNECTION_ERROR,
+        NOT_FOUND,
+        SEARCH_RESULT,
+        HISTORY_LIST,
     }
 
     private var searchEditText : String = ""
@@ -42,15 +46,19 @@ class SearchActivity : AppCompatActivity() {
     private val itunesService = retrofit.create(ItunesApi::class.java)
 
     private val searchTrackList = ArrayList<Track>()
-    private val trackAdapter = TracksAdapter(searchTrackList)
+    private val trackAdapter = TracksAdapter { clickOnTrack(it) }
+    private val historyTrackAdapter = TracksAdapter { clickOnTrack(it) }
 
+    private lateinit var searchHistory: SearchHistory
     private lateinit var inputEditText  : EditText
     private lateinit var clearBtn : ImageView
     private lateinit var recyclerViewTrack : RecyclerView
-    private lateinit var refreshButtPh : Button
-    private lateinit var errorTextPh : TextView
-    private lateinit var errorIcPh : ImageView
+    private lateinit var refreshBtn : Button
+    private lateinit var errorText : TextView
+    private lateinit var errorIcn : ImageView
     private lateinit var errorPh: LinearLayout
+    private lateinit var clearHistoryButton: Button
+    private lateinit var titleHistory: TextView
 
     private fun clearBtnVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
@@ -60,15 +68,28 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    private fun clickOnTrack(track: Track) {
+        searchHistory.addTrack(track)
+    }
+
     private val searchTextWatcher = object  : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             clearBtn.visibility = clearBtnVisibility(s)
             searchEditText = s.toString()
+            if (inputEditText.hasFocus() && s.isNullOrEmpty() && searchHistory.getList()
+                    .isNotEmpty()
+            ) showState(StateType.HISTORY_LIST)
+            else showState(StateType.SEARCH_RESULT)
         }
 
-        override fun afterTextChanged(s: Editable?) {}
+        override fun afterTextChanged(s: Editable?) {
+            if (inputEditText.hasFocus() && searchHistory.getList().isNotEmpty()) showState(
+                StateType.HISTORY_LIST
+            )
+            else showState(StateType.SEARCH_RESULT)
+        }
 
     }
 
@@ -87,44 +108,61 @@ class SearchActivity : AppCompatActivity() {
     private fun onConnectionError(){
         recyclerViewTrack.visibility = View.GONE
         errorPh.visibility = View.VISIBLE
-        refreshButtPh.visibility = View.VISIBLE
-        errorIcPh.setImageResource(R.drawable.ic_no_connection)
-        errorTextPh.setText(R.string.no_connection_msg)
+        refreshBtn.visibility = View.VISIBLE
+        errorIcn.setImageResource(R.drawable.ic_no_connection)
+        errorText.setText(R.string.no_connection_msg)
+        titleHistory.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
     }
 
     private fun onNotFoundError(){
         recyclerViewTrack.visibility = View.GONE
         errorPh.visibility = View.VISIBLE
-        refreshButtPh.visibility = View.GONE
-        errorIcPh.setImageResource(R.drawable.ic_not_found)
-        errorTextPh.setText(R.string.not_found_msg)
+        refreshBtn.visibility = View.GONE
+        errorIcn.setImageResource(R.drawable.ic_not_found)
+        errorText.setText(R.string.not_found_msg)
+        titleHistory.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
     }
 
-    private fun onNSearchResult(){
+    private fun onSearchResult(){
+        trackAdapter.tracks = searchTrackList
+        recyclerViewTrack.adapter = trackAdapter
         recyclerViewTrack.visibility = View.VISIBLE
         errorPh.visibility = View.GONE
-        refreshButtPh.visibility = View.GONE
+        refreshBtn.visibility = View.GONE
+        titleHistory.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+    }
+
+    private fun onShowHistoryList(){
+        historyTrackAdapter.tracks = searchHistory.getList()
+        recyclerViewTrack.adapter = historyTrackAdapter
+        recyclerViewTrack.visibility = View.VISIBLE
+        errorPh.visibility = View.GONE
+        refreshBtn.visibility = View.GONE
+        titleHistory.visibility = View.VISIBLE
+        clearHistoryButton.visibility = View.VISIBLE
     }
 
     private fun showState(stateType: StateType){
         when(stateType){
             StateType.CONNECTION_ERROR -> onConnectionError()
             StateType.NOT_FOUND -> onNotFoundError()
-            StateType.SEARCH_RESULT -> onNSearchResult()
+            StateType.SEARCH_RESULT -> onSearchResult()
+            StateType.HISTORY_LIST -> onShowHistoryList()
         }
 
     }
 
     private fun searchTrackList() {
         if (inputEditText.text.isNotEmpty()) {
-            Log.i("search","Search ${inputEditText.text}")
             itunesService.search(inputEditText.text.toString())
                 .enqueue(object : Callback<TrackResponse> {
                     override fun onResponse(
                         call: Call<TrackResponse>,
                         response: Response<TrackResponse>
                     ) {
-                        Log.i("search","Resp code ${response.code()}")
                         if (response.code() == 200) {
                             searchTrackList.clear()
                             if (response.body()?.results?.isNotEmpty() == true) {
@@ -155,9 +193,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initRecycler() {
-        recyclerViewTrack = findViewById<RecyclerView>(R.id.trackSearchRecycler)
+        recyclerViewTrack = findViewById(R.id.trackSearchRecycler)
         recyclerViewTrack.layoutManager = LinearLayoutManager(this)
-        recyclerViewTrack.adapter = trackAdapter
     }
 
     private fun initSearchInput() {
@@ -170,6 +207,10 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+        inputEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (searchHistory.getList().isNotEmpty() && hasFocus) showState(StateType.HISTORY_LIST)
+        }
+        inputEditText.requestFocus()
     }
 
     private fun initClearBtn() {
@@ -180,9 +221,21 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    private fun initSearchHistory() {
+        searchHistory = SearchHistory(getSharedPreferences(APP_SETTINGS, MODE_PRIVATE))
+    }
+
+    private fun initClearHistoryBtn() {
+        clearHistoryButton = findViewById(R.id.clear_history_btn)
+        clearHistoryButton.setOnClickListener {
+            searchHistory.clearList()
+            showState(StateType.SEARCH_RESULT)
+        }
+    }
+
     private fun initRefreshBtn() {
-        refreshButtPh = findViewById(R.id.refresh_butt)
-        refreshButtPh.setOnClickListener{
+        refreshBtn = findViewById(R.id.refresh_btn)
+        refreshBtn.setOnClickListener{
             searchTrackList()
         }
     }
@@ -198,15 +251,16 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        errorIcn = findViewById(R.id.error_icn_ph)
+        errorText = findViewById(R.id.error_text_ph)
+        errorPh = findViewById(R.id.error_ph)
+        titleHistory = findViewById(R.id.history_title)
+        initSearchHistory()
+        initRefreshBtn()
         initRecycler()
+        initClearHistoryBtn()
         initSearchInput()
         initClearBtn()
-        initRefreshBtn()
         setActionBtnBack()
-
-        errorIcPh = findViewById(R.id.error_icn_ph)
-        errorTextPh = findViewById(R.id.error_text_ph)
-        errorPh = findViewById(R.id.error_ph)
-
     }
 }

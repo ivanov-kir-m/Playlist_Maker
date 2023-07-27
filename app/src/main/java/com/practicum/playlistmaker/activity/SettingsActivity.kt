@@ -9,7 +9,7 @@ import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.practicum.playlistmaker.App
+import com.practicum.playlistmaker.apps.App
 import com.practicum.playlistmaker.R
 
 
@@ -37,7 +37,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setActionBtnSupport() {
         //Написать в поддержку
-        findViewById<TextView>(R.id.asSupportButt).setOnClickListener {
+        findViewById<TextView>(R.id.asSupportBtn).setOnClickListener {
             Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:")
                 putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.support_email)))

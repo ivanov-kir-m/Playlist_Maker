@@ -10,7 +10,7 @@
         android:id="@+id/asBtnBack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/main_heigh"
+        android:minHeight="@dimen/main_height"
         app:navigationIcon="@drawable/return_btn"
         app:subtitleTextColor="@android:color/primary_text_dark"
         app:title="@string/am_btn_settings_name"
@@ -20,15 +20,15 @@
         style="@style/SwitchStyle"
         android:id="@+id/asDarkThemeSwch"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/main_heigh"
-        android:paddingHorizontal="@dimen/main_ident"
+        android:layout_height="@dimen/main_height"
+        android:paddingHorizontal="@dimen/main_indent"
         android:text="@string/as_theme_dark" />
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/MenuItemsStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/main_heigh"
-        android:paddingHorizontal="@dimen/main_ident"
+        android:layout_height="@dimen/main_height"
+        android:paddingHorizontal="@dimen/main_indent"
         android:id="@+id/asShareBtn"
         android:text="@string/as_app_share"
         app:drawableEndCompat="@drawable/share" />
@@ -36,17 +36,17 @@
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/MenuItemsStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/main_heigh"
-        android:paddingHorizontal="@dimen/main_ident"
-        android:id="@+id/asSupportButt"
+        android:layout_height="@dimen/main_height"
+        android:paddingHorizontal="@dimen/main_indent"
+        android:id="@+id/asSupportBtn"
         android:text="@string/as_write_support"
         app:drawableEndCompat="@drawable/support"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/MenuItemsStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/main_heigh"
-        android:paddingHorizontal="@dimen/main_ident"
+        android:layout_height="@dimen/main_height"
+        android:paddingHorizontal="@dimen/main_indent"
         android:id="@+id/asUserAgreeBtn"
         android:text="@string/as_user_agree"
         app:drawableEndCompat="@drawable/right_arr"/>

@@ -9,7 +9,7 @@
         android:id="@+id/asBtnBack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/main_heigh"
+        android:minHeight="@dimen/main_height"
         app:navigationIcon="@drawable/return_btn"
         app:subtitleTextColor="@color/art_bg"
         app:title="@string/am_btn_media_name"
