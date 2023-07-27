@@ -74,36 +74,36 @@
             tools:text="Имя Артиста" />
 
         <ImageView
-            android:id="@+id/add_to_playlist_butt"
+            android:id="@+id/add_to_playlist_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/icn_add_to_playlist"
-            app:layout_constraintBottom_toBottomOf="@id/play_butt"
-            app:layout_constraintEnd_toStartOf="@id/play_butt"
+            app:layout_constraintBottom_toBottomOf="@id/play_btn"
+            app:layout_constraintEnd_toStartOf="@id/play_btn"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintTop_toTopOf="@+id/play_butt" />
+            app:layout_constraintTop_toTopOf="@+id/play_btn" />
 
         <ImageView
-            android:id="@+id/play_butt"
+            android:id="@+id/play_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_player_btn"
             android:src="@drawable/icn_play"
-            app:layout_constraintEnd_toStartOf="@id/favourites_butt"
-            app:layout_constraintStart_toEndOf="@id/add_to_playlist_butt"
+            app:layout_constraintEnd_toStartOf="@id/favourites_btn"
+            app:layout_constraintStart_toEndOf="@id/add_to_playlist_btn"
             app:layout_constraintTop_toBottomOf="@id/artistNameText" />
 
         <ImageView
-            android:id="@+id/favourites_butt"
+            android:id="@+id/favourites_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/icn_favourites"
 
-            app:layout_constraintBottom_toBottomOf="@+id/play_butt"
+            app:layout_constraintBottom_toBottomOf="@+id/play_btn"
             app:layout_constraintEnd_toStartOf="@id/rightBorder"
-            app:layout_constraintStart_toEndOf="@id/play_butt"
-            app:layout_constraintTop_toTopOf="@+id/play_butt" />
+            app:layout_constraintStart_toEndOf="@id/play_btn"
+            app:layout_constraintTop_toTopOf="@+id/play_btn" />
 
         <TextView style="@style/PlayTime"
             android:id="@+id/play_time"
@@ -112,7 +112,7 @@
             android:layout_marginTop="@dimen/medium_margin_player"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/play_butt"
+            app:layout_constraintTop_toBottomOf="@id/play_btn"
             android:text="@string/default_play_time"/>
 
         <TextView style="@style/PlayerInfoTitle"
