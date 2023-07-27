@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_indent"
         android:layout_marginBottom="@dimen/padding_toolbar"
-        android:background="@drawable/ic_search_background"
+        android:background="@drawable/icn_search_background"
         android:orientation="horizontal"
         android:padding="@dimen/padding_search_frame">
 
@@ -72,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:padding="@dimen/padding_search_string"
+                    android:padding="@dimen/margin_title"
                     android:text="@string/search_title"
                     android:visibility="gone" />
 
@@ -105,7 +105,7 @@
                 android:id="@+id/error_icn_ph"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_no_connection"/>
+                android:src="@drawable/icn_no_connection"/>
             <TextView style="@style/errorText"
                 android:id="@+id/error_text_ph"
                 android:layout_width="wrap_content"

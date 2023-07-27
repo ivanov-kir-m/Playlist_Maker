@@ -16,7 +16,13 @@
     <string name="support_theme_msg">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="no_connection_msg">Проблемы со связью\\n\\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="not_found_msg">Ничего не нашлось</string>
-    <string name="refresh_btn">" Обновить"</string>
+    <string name="refresh_btn">Обновить</string>
     <string name="search_title">Вы искали</string>
     <string name="clear_history_btn">Очистить историю</string>
+    <string name="track_time_title">Длительность</string>
+    <string name="collection_name_title">Альбом</string>
+    <string name="release_date_title">Год</string>
+    <string name="primary_genre_title">Жанр</string>
+    <string name="country_title">Страна</string>
+    <string name="default_play_time" translatable="false">00:00</string>
 </resources>
