@@ -4,7 +4,7 @@
     <dimen name="size_head_txt">22sp</dimen>
     <dimen name="size_item_txt">16sp</dimen>
     <dimen name="btn_corner_radius">16dp</dimen>
-    <dimen name="icon_padding">10dp</dimen>
+    <dimen name="icn_padding">10dp</dimen>
     <dimen name="main_indent">16dp</dimen>
     <dimen name="main_height">60dp</dimen>
     <dimen name="zero_dp">0dp</dimen>
@@ -16,4 +16,13 @@
     <dimen name="default_art_radius">2dp</dimen>
     <dimen name="error_text_size">19sp</dimen>
     <dimen name="error_btn_text_size">14sp</dimen>
+    <dimen name="margin_title">20dp</dimen>
+    <dimen name="margin_player">24dp</dimen>
+    <dimen name="medium_margin_player">12dp</dimen>
+    <dimen name="margin_player_btn">40dp</dimen>
+    <dimen name="margin_player_text">16dp</dimen>
+    <dimen name="margin_player_btn_to_text">30dp</dimen>
+    <dimen name="player_info">13sp</dimen>
+    <dimen name="play_time">14sp</dimen>
+    <dimen name="art_work_radius_player">8dp</dimen>
 </resources>

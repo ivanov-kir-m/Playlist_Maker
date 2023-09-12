@@ -15,4 +15,5 @@
     <color name="switch_thumb">#284581</color>
     <color name="switch_track">#3772E7</color>
     <color name="default_icn">#1A1B22</color>
+    <color name="main_grey">#AEAFB4</color>
 </resources>

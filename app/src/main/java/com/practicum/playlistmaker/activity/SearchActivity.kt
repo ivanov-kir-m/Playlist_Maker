@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,6 +19,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.view.inputmethod.EditorInfo
+import com.google.gson.Gson
 import com.practicum.playlistmaker.models.TrackResponse
 import com.practicum.playlistmaker.apps.App.Companion.APP_SETTINGS
 import com.practicum.playlistmaker.models.SearchHistory
@@ -27,6 +29,7 @@ class SearchActivity : AppCompatActivity() {
 
     companion object{
         const val SEARCH_TEXT = "search_text"
+        const val TRACK = "TRACK"
     }
 
     enum class StateType {
@@ -70,6 +73,9 @@ class SearchActivity : AppCompatActivity() {
 
     private fun clickOnTrack(track: Track) {
         searchHistory.addTrack(track)
+        val playerIntent = Intent(this, PlayerActivity::class.java)
+        playerIntent.putExtra(TRACK, Gson().toJson(track))
+        startActivity(playerIntent)
     }
 
     private val searchTextWatcher = object  : TextWatcher {
@@ -109,7 +115,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerViewTrack.visibility = View.GONE
         errorPh.visibility = View.VISIBLE
         refreshBtn.visibility = View.VISIBLE
-        errorIcn.setImageResource(R.drawable.ic_no_connection)
+        errorIcn.setImageResource(R.drawable.icn_no_connection)
         errorText.setText(R.string.no_connection_msg)
         titleHistory.visibility = View.GONE
         clearHistoryButton.visibility = View.GONE
@@ -119,7 +125,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerViewTrack.visibility = View.GONE
         errorPh.visibility = View.VISIBLE
         refreshBtn.visibility = View.GONE
-        errorIcn.setImageResource(R.drawable.ic_not_found)
+        errorIcn.setImageResource(R.drawable.icn_not_found)
         errorText.setText(R.string.not_found_msg)
         titleHistory.visibility = View.GONE
         clearHistoryButton.visibility = View.GONE

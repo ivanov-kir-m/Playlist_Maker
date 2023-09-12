@@ -15,4 +15,9 @@
     <string name="refresh_btn">Refresh</string>
     <string name="search_title">You found</string>
     <string name="clear_history_btn">Clear history</string>
+    <string name="track_time_title">Duration</string>
+    <string name="collection_name_title">Album</string>
+    <string name="release_date_title">Year</string>
+    <string name="primary_genre_title">Genre</string>
+    <string name="country_title">Country</string>
 </resources>
