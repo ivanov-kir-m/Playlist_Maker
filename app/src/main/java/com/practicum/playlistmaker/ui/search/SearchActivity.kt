@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.activity
+package com.practicum.playlistmaker.ui.search
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.models.Track
-import com.practicum.playlistmaker.addappters.TracksAdapter
+import com.practicum.playlistmaker.Track
+import com.practicum.playlistmaker.presentation.search.TracksAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,10 +22,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.view.inputmethod.EditorInfo
 import com.google.gson.Gson
-import com.practicum.playlistmaker.models.TrackResponse
-import com.practicum.playlistmaker.apps.App.Companion.APP_SETTINGS
-import com.practicum.playlistmaker.models.SearchHistory
-import com.practicum.playlistmaker.utils.ItunesApi
+import com.practicum.playlistmaker.data.dto.TrackResponse
+import com.practicum.playlistmaker.presentation.app.App.Companion.APP_SETTINGS
+import com.practicum.playlistmaker.SearchHistory
+import com.practicum.playlistmaker.data.network.ItunesApi
+import com.practicum.playlistmaker.ui.player.PlayerActivity
 
 class SearchActivity : AppCompatActivity() {
 
