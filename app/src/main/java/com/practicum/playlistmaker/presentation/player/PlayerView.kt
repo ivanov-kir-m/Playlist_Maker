@@ -2,6 +2,7 @@
 package com.practicum.playlistmaker.presentation.player
 
 interface PlayerView {
+    fun initViews()
     fun setTrackName(name: String)
     fun setArtistName(name: String)
     fun setTrackTime(time: String)

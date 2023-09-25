@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.domain
 
-class Constans {
+class Constants {
     companion object {
         const val STATE_DEFAULT = 0
         const val STATE_PREPARED = 1

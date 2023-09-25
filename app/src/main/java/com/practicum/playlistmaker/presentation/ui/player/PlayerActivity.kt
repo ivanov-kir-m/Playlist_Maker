@@ -1,6 +1,5 @@
-package com.practicum.playlistmaker.ui.player
+package com.practicum.playlistmaker.presentation.ui.player
 
-import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -10,10 +9,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.Track
+import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.presentation.player.PlayerPresenter
 import com.practicum.playlistmaker.presentation.player.PlayerView
-import com.practicum.playlistmaker.ui.search.SearchActivity.Companion.TRACK
+import com.practicum.playlistmaker.presentation.ui.search.SearchActivity.Companion.TRACK
 import com.practicum.playlistmaker.utils.Creator
 
 class PlayerActivity : AppCompatActivity(), PlayerView {
@@ -31,14 +30,7 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
     private lateinit var playBtn: ImageView
     private lateinit var playTimeText: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
-
-        findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_id).setNavigationOnClickListener {
-            finish()
-        } // реализация кнопки назад
-
+    override fun initViews() {
         playTimeText = findViewById(R.id.play_time)
 
         trackName = findViewById(R.id.trackNameText)
@@ -60,17 +52,24 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
         country = findViewById(R.id.country)
 
         playBtn = findViewById(R.id.play_btn)
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_player)
+
+        findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_id).setNavigationOnClickListener {
+            finish()
+        } // реализация кнопки назад
+
+        initViews()
 
         val track = Gson().fromJson(
             intent.getStringExtra(TRACK),
             Track::class.java
         )
 
-        presenter = Creator.providePlayerPresenter(
-            track = track,
-            mediaPlayer = MediaPlayer()
-        )
+        presenter = Creator.providePlayerPresenter(track)
         presenter.attachView(this)
         presenter.updateTimeAndButton()
 

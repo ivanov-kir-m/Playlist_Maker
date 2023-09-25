@@ -1,5 +1,5 @@
 package com.practicum.playlistmaker.data.dto
 
-import com.practicum.playlistmaker.Track
+import com.practicum.playlistmaker.domain.models.Track
 
 data class TrackResponse(val resultCount: Int, val results: List<Track>)
