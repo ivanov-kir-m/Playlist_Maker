@@ -1,7 +1,7 @@
-package com.practicum.playlistmaker.models
+package com.practicum.playlistmaker.domain.models
 
 data class Track(
-    val trackId: Int,
+    val trackId: Int, //уникальный номемр трека
     val trackName: String, // Название композиции
     val artistName: String, // Имя исполнителя
     val trackTimeMillis: Int, // Продолжительность трека

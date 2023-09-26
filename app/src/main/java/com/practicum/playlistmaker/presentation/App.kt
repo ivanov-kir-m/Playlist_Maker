@@ -1,7 +1,6 @@
-package com.practicum.playlistmaker.apps
+package com.practicum.playlistmaker.presentation
 
 import android.app.Application
-import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.appcompat.app.AppCompatDelegate

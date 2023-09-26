@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.activity
+package com.practicum.playlistmaker.presentation.ui.settings
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
@@ -9,7 +9,7 @@ import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.practicum.playlistmaker.apps.App
+import com.practicum.playlistmaker.presentation.App
 import com.practicum.playlistmaker.R
 
 
