@@ -8,11 +8,14 @@
         <item name="colorControlNormal">@color/color_bg_sub2</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/color_bg</item>
-        <item name="colorSecondaryVariant">@color/items_color</item> #FF000000 black
-        <item name="colorOnSecondary">@color/items_color_sub</item> #FF000000 black
+        <item name="colorSecondaryVariant">@color/items_color</item>
+        #FF000000 black
+        <item name="colorOnSecondary">@color/items_color_sub</item>
+        #FF000000 black
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/color_status_bar</item> #1A1B22 color_bg_dark
+        <item name="android:statusBarColor">@color/color_status_bar</item>
+        #1A1B22 color_bg_dark
         <!-- Customize your theme here. -->
-<!--        <item name="android:background">@color/color_bg_dark</item> #1A1B22 color_bg_dark-->
+        <!--        <item name="android:background">@color/color_bg_dark</item> #1A1B22 color_bg_dark-->
     </style>
 </resources>
