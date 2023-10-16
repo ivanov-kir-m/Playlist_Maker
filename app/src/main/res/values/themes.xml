@@ -22,5 +22,7 @@
         #FFFFFFFF white
         <!-- Customize your theme here. -->
         <item name="android:windowNoTitle">true</item>
+
+        <item name="colorAccent">@color/color_pb</item>
     </style>
 </resources>

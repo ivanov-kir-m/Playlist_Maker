@@ -2,11 +2,9 @@ package com.practicum.playlistmaker.ui.search.view_model
 
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.practicum.playlistmaker.domain.Constants.Companion.CLICK_ITEM_DELAY
 import com.practicum.playlistmaker.domain.player.model.Track
 import com.practicum.playlistmaker.domain.search.SearchInteractor
 import com.practicum.playlistmaker.ui.search.view_model.model.SearchState
@@ -16,9 +14,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private var isClickAllowed = true
-
-    private var changeText: String? = null
+    private var lastSearchText = ""
 
     private val _stateLiveData = MutableLiveData<SearchState>()
     val stateLiveData: LiveData<SearchState> get() = _stateLiveData
@@ -27,60 +23,44 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         getHistoryList()
     }
 
-    fun searchTrackList(query: String?) {
-        handler.removeCallbacksAndMessages(SEARCH_TOKEN)
-        query?.let {
-            _stateLiveData.postValue(SearchState.Loading)
-            searchInteractor.searchTrackList(query, object : SearchInteractor.SearchConsumer {
-                override fun consume(
-                    foundTracks: List<Track>?,
-                    errorMassage: String?
-                ) {
-                    when (errorMassage) {
-                        null -> {
-                            val tracks = arrayListOf<Track>()
-
-                            if (foundTracks != null) {
-                                tracks.addAll(foundTracks)
+    fun searchTrackList(query: String) {
+        handler.removeCallbacksAndMessages(null)
+        if (query.isNotEmpty()) {
+            query.let {
+                _stateLiveData.postValue(SearchState.Loading)
+                searchInteractor.searchTrackList(query, object : SearchInteractor.SearchConsumer {
+                    override fun consume(
+                        foundTracks: List<Track>?,
+                        errorMassage: String?
+                    ) {
+                        when (errorMassage) {
+                            null -> {
+                                val tracks = arrayListOf<Track>()
+                                if (foundTracks != null) {
+                                    tracks.addAll(foundTracks)
+                                }
+                                _stateLiveData.postValue(SearchState.SearchResult(tracks = tracks))
                             }
-                            _stateLiveData.postValue(SearchState.SearchResult(tracks = tracks))
-
-                        }
-                        Resource.NOT_FOUND -> {
-                            _stateLiveData.postValue(SearchState.Error(errorMassage))
-                        }
-                        else -> {
-                            _stateLiveData.postValue(SearchState.Error(Resource.CONNECTION_ERROR))
+                            Resource.NOT_FOUND -> {
+                                _stateLiveData.postValue(SearchState.Error(errorMassage))
+                            }
+                            else -> {
+                                _stateLiveData.postValue(SearchState.Error(Resource.CONNECTION_ERROR))
+                            }
                         }
                     }
-                }
-            })
-        }
-    }
-
-    fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_ITEM_DELAY)
-        }
-        return current
-    }
-
-    fun searchDebounce(changedText: String?) {
-        if (!changedText.isNullOrEmpty()) {
-            if (changedText == changeText) {
-                return
+                })
             }
-            handler.removeCallbacksAndMessages(SEARCH_TOKEN)
-            val searchRunnable = Runnable { searchTrackList(changedText) }
-            val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-            handler.postAtTime(
-                searchRunnable,
-                SEARCH_TOKEN,
-                postTime,
-            )
-            this.changeText = changedText
+        }
+    }
+
+    fun searchDebounce(changedText: String) {
+        handler.removeCallbacksAndMessages(null)
+        if (lastSearchText != changedText) {
+            handler.postDelayed({
+                searchTrackList(changedText)
+            }, SEARCH_DEBOUNCE_DELAY)
+            lastSearchText = changedText
         }
     }
 
@@ -112,7 +92,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     }
 
     companion object {
-        private val SEARCH_TOKEN = Any()
         const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
+
 }
