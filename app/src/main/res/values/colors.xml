@@ -15,6 +15,7 @@
     <color name="switch_thumb">#E6E8EB</color>
     <color name="switch_track">#AEAFB4</color>
     <color name="default_icn">#AEAFB4</color>
+    <color name="default_search">#AEAFB4</color>
     <color name="main_grey">#AEAFB4</color>
     <color name="color_pb">#3772E7</color>
 </resources>

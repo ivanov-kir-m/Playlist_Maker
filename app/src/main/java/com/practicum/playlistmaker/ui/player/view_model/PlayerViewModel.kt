@@ -3,28 +3,25 @@ package com.practicum.playlistmaker.ui.player.view_model
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.domain.*
 import com.practicum.playlistmaker.domain.player.PlayerInteractor
+import com.practicum.playlistmaker.ui.search.view_model.model.SearchViewState
 import com.practicum.playlistmaker.utils.DateUtils.millisToStrFormat
 
 class PlayerViewModel(private val player: PlayerInteractor) : ViewModel() {
 
-    private val _playButtonEnabled = MutableLiveData<Boolean>()
-    val playButtonEnabled: LiveData<Boolean> get() = _playButtonEnabled
+    private val _viewModelState = SearchViewState()
 
-    private val _playButtonImage = MutableLiveData<Int>()
-    val playButtonImage: LiveData<Int> get() = _playButtonImage
-
-    private val _playTextTime = MutableLiveData<String>()
-    val playTextTime: LiveData<String> get() = _playTextTime
+    val playButtonEnabled: LiveData<Boolean> get() = _viewModelState.playButtonEnabled
+    val playButtonImage: LiveData<Int> get() = _viewModelState.playButtonImage
+    val playTextTime: LiveData<String> get() = _viewModelState.playTextTime
 
     private var mainThreadHandler = Handler(Looper.getMainLooper())
 
     init {
-        _playButtonEnabled.value = false
+        _viewModelState.playButtonEnabled.value = false
         conditionPlayButton()
     }
 
@@ -47,30 +44,31 @@ class PlayerViewModel(private val player: PlayerInteractor) : ViewModel() {
 
     private fun startPlayer() {
         player.startPlayer()
-        _playButtonImage.value = R.drawable.icn_pause
+        _viewModelState.playButtonImage.value = R.drawable.icn_pause
         updateTimeAndButton()
     }
 
     fun pausePlayer() {
         player.pausePlayer()
-        _playButtonImage.value = R.drawable.icn_play
+        _viewModelState.playButtonImage.value = R.drawable.icn_play
         mainThreadHandler.removeCallbacksAndMessages(null)
     }
 
     private fun updateTimeAndButton() {
         var lastCurrentTime = REFRESH_PLAY_TIME_MILLIS
-        _playTextTime.value = millisToStrFormat(player.getCurrentTime())
+        _viewModelState.playTextTime.value = millisToStrFormat(player.getCurrentTime())
         mainThreadHandler.postDelayed(
             object : Runnable {
                 override fun run() {
                     val currentTime = player.getCurrentTime()
                     if (currentTime < REFRESH_PLAY_TIME_MILLIS && lastCurrentTime != currentTime) {
                         lastCurrentTime = currentTime
-                        _playTextTime.value = millisToStrFormat(currentTime)
+                        _viewModelState.playTextTime.value = millisToStrFormat(currentTime)
                     } else {
                         lastCurrentTime = REFRESH_PLAY_TIME_MILLIS
-                        _playTextTime.value = millisToStrFormat(START_PLAY_TIME_MILLIS)
-                        _playButtonImage.value = R.drawable.icn_play
+                        _viewModelState.playTextTime.value =
+                            millisToStrFormat(START_PLAY_TIME_MILLIS)
+                        _viewModelState.playButtonImage.value = R.drawable.icn_play
                     }
                     // И снова планируем то же действие через 0.5 сек
                     mainThreadHandler.postDelayed(
@@ -86,7 +84,8 @@ class PlayerViewModel(private val player: PlayerInteractor) : ViewModel() {
         mainThreadHandler.postDelayed(
             object : Runnable {
                 override fun run() {
-                    _playButtonEnabled.value = player.getPlayerState() != STATE_DEFAULT
+                    _viewModelState.playButtonEnabled.value =
+                        player.getPlayerState() != STATE_DEFAULT
                     mainThreadHandler.postDelayed(this, DELAY_MILLIS)
                 }
             }, DELAY_MILLIS

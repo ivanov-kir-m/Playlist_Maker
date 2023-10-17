@@ -34,7 +34,7 @@
             android:autofillHints="search_str"
             android:drawableStart="@drawable/search"
             android:drawablePadding="@dimen/padding_search_string"
-            android:drawableTint="@color/default_icn"
+            android:drawableTint="@color/default_search"
             android:hint="@string/search_msg"
             android:imeOptions="actionDone"
             android:inputType="text"
@@ -43,13 +43,14 @@
 
         <ImageView
             android:id="@+id/clearIcon"
-            style="@style/DefaultIcn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@null"
             android:paddingStart="@dimen/padding_search_string"
             android:src="@drawable/clear_btn"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:tint="@color/default_search" />
     </LinearLayout>
 
     <FrameLayout
