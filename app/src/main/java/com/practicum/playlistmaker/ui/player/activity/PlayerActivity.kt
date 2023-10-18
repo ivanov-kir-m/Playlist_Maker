@@ -28,19 +28,13 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        playerViewModel.playButtonEnabled.observe(this) {
-            binding.playBtn.isEnabled = it
+        playerViewModel.searchViewState.observe(this) { state ->
+            binding.playBtn.isEnabled = state.playButtonEnabled
+            binding.playBtn.setImageResource(state.playButtonImage)
+            binding.playTime.text = state.playTextTime
         }
         binding.playBtn.setOnClickListener {
             playerViewModel.playbackControl()
-        }
-
-        playerViewModel.playButtonImage.observe(this) {
-            binding.playBtn.setImageResource(it)
-        }
-
-        playerViewModel.playTextTime.observe(this) {
-            binding.playTime.text = it
         }
 
         binding.trackNameText.text = track.trackName
