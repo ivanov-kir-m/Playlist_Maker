@@ -2,17 +2,27 @@
     <!-- Base application theme. -->
     <style name="Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/white</item> #FFFFFFFF white
-        <item name="colorPrimaryVariant">@color/color_bg_sub</item> #E6E8EB color_bg_light_grey
-        <item name="colorOnPrimary">@color/color_bg_sub2</item> #FF000000 black
-        <item name="colorControlNormal">@color/color_bg_sub2</item> #FF000000 black
+        <item name="colorPrimary">@color/white</item>
+        #FFFFFFFF white
+        <item name="colorPrimaryVariant">@color/color_bg_sub</item>
+        #E6E8EB color_bg_light_grey
+        <item name="colorOnPrimary">@color/color_bg_sub2</item>
+        #FF000000 black
+        <item name="colorControlNormal">@color/color_bg_sub2</item>
+        #FF000000 black
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/color_bg</item> #3772E7 color_bg_blue
-        <item name="colorSecondaryVariant">@color/items_color</item> #AEAFB4 items_color
-        <item name="colorOnSecondary">@color/items_color_sub</item> #FFFFFFFF white
+        <item name="colorSecondary">@color/color_bg</item>
+        #3772E7 color_bg_blue
+        <item name="colorSecondaryVariant">@color/items_color</item>
+        #AEAFB4 items_color
+        <item name="colorOnSecondary">@color/items_color_sub</item>
+        #FFFFFFFF white
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/color_status_bar</item> #FFFFFFFF white
+        <item name="android:statusBarColor">@color/color_status_bar</item>
+        #FFFFFFFF white
         <!-- Customize your theme here. -->
         <item name="android:windowNoTitle">true</item>
+
+        <item name="colorAccent">@color/color_pb</item>
     </style>
 </resources>
