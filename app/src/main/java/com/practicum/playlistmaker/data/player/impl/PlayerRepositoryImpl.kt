@@ -6,8 +6,9 @@ import com.practicum.playlistmaker.domain.STATE_PAUSED
 import com.practicum.playlistmaker.domain.STATE_PLAYING
 import com.practicum.playlistmaker.domain.STATE_PREPARED
 import com.practicum.playlistmaker.domain.player.PlayerRepository
+import com.practicum.playlistmaker.domain.player.model.Track
 
-class PlayerRepositoryImpl(private val mediaPlayer: MediaPlayer) :
+class PlayerRepositoryImpl(track: Track, private val mediaPlayer: MediaPlayer) :
     PlayerRepository {
 
     private var playerState = STATE_DEFAULT
