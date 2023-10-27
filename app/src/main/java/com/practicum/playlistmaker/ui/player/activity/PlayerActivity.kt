@@ -3,9 +3,11 @@ package com.practicum.playlistmaker.ui.player.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker.domain.player.model.Track
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
@@ -13,8 +15,6 @@ import com.practicum.playlistmaker.ui.search.activity.SearchActivity.Companion.T
 import com.practicum.playlistmaker.utils.DateUtils.millisToStrFormat
 import com.practicum.playlistmaker.utils.DateUtils.previewUrlSizeChange
 import com.practicum.playlistmaker.utils.DateUtils.strDateFormat
-import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker.creator.Creator
 
 
 class PlayerActivity : AppCompatActivity() {

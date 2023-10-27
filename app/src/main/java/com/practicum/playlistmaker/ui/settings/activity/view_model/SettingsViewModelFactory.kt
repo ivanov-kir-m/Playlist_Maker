@@ -11,6 +11,6 @@ class SettingsViewModelFactory(context: Context) : ViewModelProvider.Factory {
     private val sharingInteractor = Creator.provideSharingInteractor(context)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return SettingsViewModel( sharingInteractor,settingsInteractor,) as T
+        return SettingsViewModel(sharingInteractor, settingsInteractor) as T
     }
 }

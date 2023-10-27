@@ -1,11 +1,11 @@
 package com.practicum.playlistmaker.ui.player.view_model
-import androidx.lifecycle.ViewModelProvider
 
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.domain.*
 import com.practicum.playlistmaker.domain.player.PlayerInteractor
@@ -13,7 +13,8 @@ import com.practicum.playlistmaker.domain.player.model.Track
 import com.practicum.playlistmaker.ui.search.view_model.model.SearchViewState
 import com.practicum.playlistmaker.utils.DateUtils.millisToStrFormat
 
-class PlayerViewModel(private val player: PlayerInteractor, private val track: Track) : ViewModel() {
+class PlayerViewModel(private val player: PlayerInteractor, private val track: Track) :
+    ViewModel() {
 
     private val _searchViewState = MutableLiveData(
         // Это дефолтный стейт экрана, который будет применён сразу после открытия
@@ -69,7 +70,7 @@ class PlayerViewModel(private val player: PlayerInteractor, private val track: T
     private fun updateTimeAndButton() {
         var lastCurrentTime = REFRESH_PLAY_TIME_MILLIS
         _searchViewState.value = _searchViewState.value?.copy(
-            playTextTime =  millisToStrFormat(player.getCurrentTime())
+            playTextTime = millisToStrFormat(player.getCurrentTime())
         )
         mainThreadHandler.postDelayed(
             object : Runnable {
@@ -78,13 +79,13 @@ class PlayerViewModel(private val player: PlayerInteractor, private val track: T
                     if (currentTime < REFRESH_PLAY_TIME_MILLIS && lastCurrentTime != currentTime) {
                         lastCurrentTime = currentTime
                         _searchViewState.value = _searchViewState.value?.copy(
-                            playTextTime =  millisToStrFormat(currentTime)
+                            playTextTime = millisToStrFormat(currentTime)
                         )
                     } else {
                         lastCurrentTime = REFRESH_PLAY_TIME_MILLIS
                         _searchViewState.value = _searchViewState.value?.copy(
-                            playButtonImage =   R.drawable.icn_play,
-                            playTextTime =  millisToStrFormat(START_PLAY_TIME_MILLIS)
+                            playButtonImage = R.drawable.icn_play,
+                            playTextTime = millisToStrFormat(START_PLAY_TIME_MILLIS)
                         )
                     }
                     // И снова планируем то же действие через 0.5 сек
@@ -102,7 +103,7 @@ class PlayerViewModel(private val player: PlayerInteractor, private val track: T
             object : Runnable {
                 override fun run() {
                     _searchViewState.value = _searchViewState.value?.copy(
-                        playButtonEnabled =  player.getPlayerState() != STATE_DEFAULT
+                        playButtonEnabled = player.getPlayerState() != STATE_DEFAULT
                     )
                     mainThreadHandler.postDelayed(this, DELAY_MILLIS)
                 }

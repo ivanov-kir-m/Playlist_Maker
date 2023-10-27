@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.media.MediaPlayer
-import com.practicum.playlistmaker.domain.player.model.Track
 import com.practicum.playlistmaker.data.player.impl.PlayerRepositoryImpl
 import com.practicum.playlistmaker.data.search.HistoryStorage
 import com.practicum.playlistmaker.data.search.NetworkClient
@@ -17,10 +16,11 @@ import com.practicum.playlistmaker.data.settings.impl.ThemeStorageImpl
 import com.practicum.playlistmaker.data.sharing.SharingStorage
 import com.practicum.playlistmaker.data.sharing.impl.SharingRepositoryImpl
 import com.practicum.playlistmaker.data.sharing.impl.SharingStorageImpl
-import com.practicum.playlistmaker.domain.*
+import com.practicum.playlistmaker.domain.APP_SETTINGS
 import com.practicum.playlistmaker.domain.player.PlayerInteractor
 import com.practicum.playlistmaker.domain.player.PlayerRepository
 import com.practicum.playlistmaker.domain.player.impl.PlayerInteractorImpl
+import com.practicum.playlistmaker.domain.player.model.Track
 import com.practicum.playlistmaker.domain.search.SearchInteractor
 import com.practicum.playlistmaker.domain.search.SearchRepository
 import com.practicum.playlistmaker.domain.search.impl.SearchInteractorImpl
