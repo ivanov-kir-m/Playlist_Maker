@@ -11,7 +11,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
@@ -21,14 +20,14 @@ import com.practicum.playlistmaker.domain.player.model.Track
 import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 import com.practicum.playlistmaker.ui.search.adapter.TracksAdapter
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
-import com.practicum.playlistmaker.ui.search.view_model.SearchViewModelFactory
 import com.practicum.playlistmaker.ui.search.view_model.model.SearchState
 import com.practicum.playlistmaker.utils.Resource
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var vmSearch: SearchViewModel
+    private val vmSearch: SearchViewModel by viewModel()
 
     private val trackAdapter = TracksAdapter { clickOnTrack(it) }
     private val historyTrackAdapter = TracksAdapter { clickOnTrack(it) }
@@ -50,11 +49,6 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        vmSearch = ViewModelProvider(
-            this,
-            SearchViewModelFactory(this)
-        )[SearchViewModel::class.java]
 
         vmSearch.stateLiveData.observe(this) {
             showState(it)
