@@ -1,4 +1,5 @@
 package com.practicum.playlistmaker.ui.player.view_model
+import androidx.lifecycle.ViewModelProvider
 
 import android.os.Handler
 import android.os.Looper
@@ -8,10 +9,11 @@ import androidx.lifecycle.ViewModel
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.domain.*
 import com.practicum.playlistmaker.domain.player.PlayerInteractor
+import com.practicum.playlistmaker.domain.player.model.Track
 import com.practicum.playlistmaker.ui.search.view_model.model.SearchViewState
 import com.practicum.playlistmaker.utils.DateUtils.millisToStrFormat
 
-class PlayerViewModel(private val player: PlayerInteractor) : ViewModel() {
+class PlayerViewModel(private val player: PlayerInteractor, private val track: Track) : ViewModel() {
 
     private val _searchViewState = MutableLiveData(
         // Это дефолтный стейт экрана, который будет применён сразу после открытия
@@ -108,9 +110,26 @@ class PlayerViewModel(private val player: PlayerInteractor) : ViewModel() {
         )
     }
 
+
     override fun onCleared() {
         super.onCleared()
         mainThreadHandler.removeCallbacksAndMessages(null)
         player.releasePlayer()
+    }
+
+    companion object {
+        fun getPlayerViewModelFactory(
+            player: PlayerInteractor,
+            track: Track,
+        ): ViewModelProvider.Factory =
+            object : ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return PlayerViewModel(
+                        player = player,
+                        track = track,
+                    ) as T
+                }
+            }
     }
 }

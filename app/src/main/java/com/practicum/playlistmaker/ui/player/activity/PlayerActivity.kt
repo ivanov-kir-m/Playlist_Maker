@@ -13,17 +13,26 @@ import com.practicum.playlistmaker.ui.search.activity.SearchActivity.Companion.T
 import com.practicum.playlistmaker.utils.DateUtils.millisToStrFormat
 import com.practicum.playlistmaker.utils.DateUtils.previewUrlSizeChange
 import com.practicum.playlistmaker.utils.DateUtils.strDateFormat
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.lifecycle.ViewModelProvider
+import com.practicum.playlistmaker.creator.Creator
 
 
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
-    private val playerViewModel: PlayerViewModel by viewModel()
+    private lateinit var playerViewModel: PlayerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         @Suppress("DEPRECATION") val track = intent.getSerializableExtra(TRACK) as Track
+        val playerInteractor = Creator.providePlayerInteractor(track)
+
+        playerViewModel = ViewModelProvider(
+            this,
+            PlayerViewModel.getPlayerViewModelFactory(playerInteractor, track)
+        )[PlayerViewModel::class.java]
+
         playerViewModel.prepareTrack(track.previewUrl)
+
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
