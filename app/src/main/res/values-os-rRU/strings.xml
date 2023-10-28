@@ -20,4 +20,10 @@
     <string name="release_date_title">Год</string>
     <string name="primary_genre_title">Жанр</string>
     <string name="country_title">Страна</string>
+    <string name="media_library">Медиатека</string>
+    <string name="favourites_tracks">Избранные треки</string>
+    <string name="new_playlist_btn">Новый плейлист</string>
+    <string name="no_media">Вы не создали\nни одного плейлиста</string>
+    <string name="playlists">Плейлисты</string>
+    <string name="media_library_empty">Ваша медиатека пуста</string>
 </resources>

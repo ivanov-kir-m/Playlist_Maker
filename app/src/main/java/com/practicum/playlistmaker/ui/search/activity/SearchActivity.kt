@@ -27,7 +27,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-    private val vmSearch: SearchViewModel by viewModel()
+    private val viewModel: SearchViewModel by viewModel()
 
     private val trackAdapter = TracksAdapter { clickOnTrack(it) }
     private val historyTrackAdapter = TracksAdapter { clickOnTrack(it) }
@@ -50,7 +50,7 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        vmSearch.stateLiveData.observe(this) {
+        viewModel.stateLiveData.observe(this) {
             showState(it)
         }
 
@@ -67,9 +67,9 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 if (inputEditText.hasFocus() && s.isNullOrEmpty()) {
-                    vmSearch.getHistoryList()
+                    viewModel.getHistoryList()
                 }
-                vmSearch.searchDebounce(inputEditText.text.toString())
+                viewModel.searchDebounce(inputEditText.text.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -78,7 +78,7 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.addTextChangedListener(searchTextWatcher)
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                vmSearch.searchTrackList(inputEditText.text.toString())
+                viewModel.searchTrackList(inputEditText.text.toString())
                 true
             }
             false
@@ -96,7 +96,7 @@ class SearchActivity : AppCompatActivity() {
 
         refreshButtPh = binding.refreshBtn
         refreshButtPh.setOnClickListener {
-            vmSearch.searchTrackList(inputEditText.text.toString())
+            viewModel.searchTrackList(inputEditText.text.toString())
         } // реализация кнопки обновить на окне с ошибкой соединения
 
         errorPh = binding.errorPh
@@ -107,7 +107,7 @@ class SearchActivity : AppCompatActivity() {
         titleHistory = binding.historyTitle
 
         clearHistoryButton.setOnClickListener {
-            vmSearch.clearHistory()
+            viewModel.clearHistory()
         } // реализация кнопки очистки истории
 
         inputEditText.requestFocus() // установка фокуса на поисковую строку
@@ -115,7 +115,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun clickOnTrack(track: Track) {
         if (clickDebounce()) {
-            vmSearch.saveTrackToHistory(track)
+            viewModel.saveTrackToHistory(track)
             val playerIntent = Intent(this, PlayerActivity::class.java).apply {
                 putExtra(TRACK, track)
             }
@@ -206,8 +206,8 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (vmSearch.stateLiveData.value is SearchState.HistoryList)
-            vmSearch.getHistoryList()
+        if (viewModel.stateLiveData.value is SearchState.HistoryList)
+            viewModel.getHistoryList()
     }
 
     companion object {
