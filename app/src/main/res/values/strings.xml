@@ -25,4 +25,10 @@
     <string name="primary_genre_title">Жанр</string>
     <string name="country_title">Страна</string>
     <string name="default_play_time" translatable="false">00:00</string>
+    <string name="media_library">Медиатека</string>
+    <string name="media_library_empty">Ваша медиатека пуста</string>
+    <string name="new_playlist_btn">Новый плейлист</string>
+    <string name="favourites_tracks">Избранные треки</string>
+    <string name="playlists">Плейлисты</string>
+    <string name="no_media">Вы не создали\nни одного плейлиста</string>
 </resources>

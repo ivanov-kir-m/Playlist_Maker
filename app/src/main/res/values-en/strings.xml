@@ -20,4 +20,10 @@
     <string name="release_date_title">Year</string>
     <string name="primary_genre_title">Genre</string>
     <string name="country_title">Country</string>
+    <string name="media_library">Media library</string>
+    <string name="favourites_tracks">Favourites tracks</string>
+    <string name="new_playlist_btn">New playlist</string>
+    <string name="no_media">You haven\'t created\nany playlist</string>
+    <string name="playlists">Playlists</string>
+    <string name="media_library_empty">Your media library is empty</string>
 </resources>
