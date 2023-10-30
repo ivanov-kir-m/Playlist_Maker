@@ -12,4 +12,4 @@ const val APP_SETTINGS = "APP_SETTINGS"
 const val DARK_THEME = "DARK_THEME"
 
 const val CLICK_ITEM_DELAY = 1000L
-const val ITUNES_URL = "http://itunes.apple.com"
+const val ITUNES_URL = "https://itunes.apple.com"

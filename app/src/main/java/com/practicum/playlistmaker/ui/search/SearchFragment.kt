@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.ui.search.activity
+package com.practicum.playlistmaker.ui.search
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,15 +6,18 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.domain.CLICK_ITEM_DELAY
 import com.practicum.playlistmaker.domain.player.model.Track
 import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
@@ -24,9 +27,10 @@ import com.practicum.playlistmaker.ui.search.view_model.model.SearchState
 import com.practicum.playlistmaker.utils.Resource
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: SearchViewModel by viewModel()
 
     private val trackAdapter = TracksAdapter { clickOnTrack(it) }
@@ -37,7 +41,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var recyclerViewTrack: RecyclerView
     private lateinit var refreshButtPh: Button
     private lateinit var errorTextPh: TextView
-    private lateinit var errorIcPh: ImageView
+    private lateinit var errorIcnPlaceholder: ImageView
     private lateinit var errorPh: LinearLayout
     private lateinit var clearHistoryButton: Button
     private lateinit var titleHistory: TextView
@@ -45,10 +49,18 @@ class SearchActivity : AppCompatActivity() {
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewModel.stateLiveData.observe(this) {
             showState(it)
@@ -57,7 +69,7 @@ class SearchActivity : AppCompatActivity() {
         progressBar = binding.progressBar
 
         recyclerViewTrack = binding.trackSearchRecycler
-        recyclerViewTrack.layoutManager = LinearLayoutManager(this)
+        recyclerViewTrack.layoutManager = LinearLayoutManager(requireContext())
 
         inputEditText = binding.inputEditText
 
@@ -90,17 +102,13 @@ class SearchActivity : AppCompatActivity() {
             clearSearch()
         } // реализация кнопки очисти поисковой стоки
 
-        binding.asBtnBack.setNavigationOnClickListener {
-            finish()
-        } // реализация кнопки назад
-
         refreshButtPh = binding.refreshBtn
         refreshButtPh.setOnClickListener {
             viewModel.searchTrackList(inputEditText.text.toString())
         } // реализация кнопки обновить на окне с ошибкой соединения
 
         errorPh = binding.errorPh
-        errorIcPh = binding.errorIcnPh
+        errorIcnPlaceholder = binding.errorIcnPh
         errorTextPh = binding.errorTextPh
 
         clearHistoryButton = binding.clearHistoryBtn
@@ -113,10 +121,15 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.requestFocus() // установка фокуса на поисковую строку
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun clickOnTrack(track: Track) {
         if (clickDebounce()) {
             viewModel.saveTrackToHistory(track)
-            val playerIntent = Intent(this, PlayerActivity::class.java).apply {
+            val playerIntent = Intent(requireContext(), PlayerActivity::class.java).apply {
                 putExtra(TRACK, track)
             }
             startActivity(playerIntent)
@@ -143,9 +156,10 @@ class SearchActivity : AppCompatActivity() {
     private fun clearSearch() {
         inputEditText.setText("")
         trackAdapter.notifyDataSetChanged()
-        val view = this.currentFocus
+        val view = requireActivity().currentFocus
         if (view != null) {
-            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodManager =
+                requireContext().getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
             view.clearFocus()
         }
@@ -160,11 +174,11 @@ class SearchActivity : AppCompatActivity() {
                 clearHistoryButton.visibility = View.GONE
                 progressBar.visibility = View.GONE
                 if (stateType.errorMessage == Resource.CONNECTION_ERROR) {
-                    errorIcPh.setImageResource(R.drawable.icn_no_connection)
+                    errorIcnPlaceholder.setImageResource(R.drawable.icn_no_connection)
                     errorTextPh.setText(R.string.no_connection_msg)
                     refreshButtPh.visibility = View.VISIBLE
                 } else {
-                    errorIcPh.setImageResource(R.drawable.icn_not_found)
+                    errorIcnPlaceholder.setImageResource(R.drawable.icn_not_found)
                     errorTextPh.setText(R.string.not_found_msg)
                     refreshButtPh.visibility = View.GONE
                 }

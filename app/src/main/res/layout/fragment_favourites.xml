@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/ic_ph"
+        android:id="@+id/icn_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/icn_err_media_mrg_top"
@@ -24,6 +24,6 @@
         android:text="@string/media_library_empty"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ic_ph" />
+        app:layout_constraintTop_toBottomOf="@+id/icn_placeholder" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

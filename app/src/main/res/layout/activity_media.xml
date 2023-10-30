@@ -8,9 +8,9 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_id"
+        style="@style/ToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="60dp"
         app:navigationIcon="@drawable/return_btn"
         app:subtitleTextColor="@android:color/primary_text_dark"
         app:title="@string/media_library" />
