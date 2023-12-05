@@ -2,8 +2,6 @@ package com.practicum.playlistmaker.ui.search
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -18,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
-import com.practicum.playlistmaker.domain.CLICK_ITEM_DELAY
 import com.practicum.playlistmaker.domain.player.model.Track
 import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 import com.practicum.playlistmaker.ui.search.adapter.TracksAdapter
@@ -46,8 +43,6 @@ class SearchFragment : Fragment() {
     private lateinit var clearHistoryButton: Button
     private lateinit var titleHistory: TextView
     private lateinit var progressBar: ProgressBar
-    private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -127,22 +122,13 @@ class SearchFragment : Fragment() {
     }
 
     private fun clickOnTrack(track: Track) {
-        if (clickDebounce()) {
+        if (viewModel.clickDebounce()) {
             viewModel.saveTrackToHistory(track)
             val playerIntent = Intent(requireContext(), PlayerActivity::class.java).apply {
                 putExtra(TRACK, track)
             }
             startActivity(playerIntent)
         }
-    }
-
-    fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_ITEM_DELAY)
-        }
-        return current
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
