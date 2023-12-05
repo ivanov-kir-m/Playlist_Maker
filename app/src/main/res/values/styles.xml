@@ -23,16 +23,17 @@
         <item name="iconTint">@color/main_icn</item>
     </style>
 
-    <style name="MainTitleStyle">
+    <style name="MenuTitleStyle">
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="fontWeight">500</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/main_title</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">@dimen/size_head_txt</item>
         <item name="android:layout_marginBottom">@dimen/main_indent</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">0</item>
+        <item name="android:padding">@dimen/padding_search_frame</item>
+        <item name="android:minHeight">@dimen/main_height</item>
     </style>
 
     <style name="MenuItemsStyle">
@@ -96,7 +97,7 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="refreshBtn" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <style name="PlaylistMakerPrimaryButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="fontWeight">500</item>
         <item name="android:textSize">@dimen/error_btn_text_size</item>
         <item name="fontFamily">@font/ys_display_medium</item>
@@ -164,7 +165,13 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="MediaTubs">
+    <style name="ToolbarStyle">
+        <item name="android:minHeight">?attr/actionBarSize</item>
+    </style>
+
+    <!--    MediaLibrary -->
+
+    <style name="MediaTabs">
         <item name="fontWeight">500</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/play_time</item>
@@ -172,8 +179,14 @@
     </style>
 
     <style name="CustomTabLayout" parent="Widget.MaterialComponents.TabLayout">
-        <item name="tabTextAppearance">@style/MediaTubs</item>
+        <item name="tabTextAppearance">@style/MediaTabs</item>
         <item name="tabIndicatorColor">@color/tab_indicator_color</item>
         <item name="tabTextColor">@color/tab_indicator_color</item>
+    </style>
+
+    <style name="BottomNavTextStyle">
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">@dimen/navigate_text_size</item>
     </style>
 </resources>

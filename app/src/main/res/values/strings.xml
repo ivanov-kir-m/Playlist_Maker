@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">Playlist Maker</string>
-    <string name="search_msg">Поиск</string>
+    <string name="search">Поиск</string>
     <string name="am_btn_media_library_name">Медиатека</string>
-    <string name="am_btn_settings_name">Настройки</string>
+    <string name="settings">Настройки</string>
     <string name="as_theme_dark">Темная тема</string>
     <string name="as_app_share">Поделиться приложением</string>
     <string name="as_write_support">Написать в поддержку</string>
@@ -31,4 +31,6 @@
     <string name="favourites_tracks">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
     <string name="no_media">Вы не создали\nни одного плейлиста</string>
+    <string name="title_activity_root" translatable="false">RootActivity</string>
+
 </resources>

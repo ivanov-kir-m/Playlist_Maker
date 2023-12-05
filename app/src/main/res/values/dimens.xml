@@ -27,4 +27,6 @@
     <dimen name="art_work_radius_player">8dp</dimen>
     <dimen name="progress_bar_size">44dp</dimen>
     <dimen name="icn_err_media_mrg_top">106dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="navigate_text_size">12sp</dimen>
 </resources>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="am_btn_media_library_name">Медиатека</string>
-    <string name="search_msg">Поиск</string>
+    <string name="search">Поиск</string>
     <string name="as_theme_dark">Темная тема</string>
-    <string name="am_btn_settings_name">Настройки</string>
+    <string name="settings">Настройки</string>
     <string name="as_app_share">Поделиться приложением</string>
     <string name="as_write_support">Написать в поддержку</string>
     <string name="as_user_agree">Пользовательское соглашение</string>
