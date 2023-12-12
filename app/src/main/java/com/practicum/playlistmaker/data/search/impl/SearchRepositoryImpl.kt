@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.data.search.impl
 
+import com.practicum.playlistmaker.data.db.AppDatabase
 import com.practicum.playlistmaker.data.search.HistoryStorage
 import com.practicum.playlistmaker.data.search.NetworkClient
 import com.practicum.playlistmaker.data.search.network.model.TrackResponse
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.flow
 class SearchRepositoryImpl(
     private val networkClient: NetworkClient,
     private val storage: HistoryStorage,
+    private val appDatabase: AppDatabase
 ) : SearchRepository {
 
     override fun searchTrackList(expression: String): Flow<Resource<List<Track>>> = flow {
@@ -38,6 +40,7 @@ class SearchRepositoryImpl(
                             primaryGenreName = it.primaryGenreName,
                             country = it.country,
                             previewUrl = it.previewUrl,
+                            isFavorite = trackIsFavorite(it.trackId),
                         )
                     }
                     emit(Resource.Success(data))
@@ -60,6 +63,10 @@ class SearchRepositoryImpl(
 
     override fun addTrackToHistory(track: Track) {
         storage.addTrack(track)
+    }
+
+    private suspend fun trackIsFavorite(id: Int): Boolean {
+        return appDatabase.favoritesDao().getFavoritesIdList().contains(id)
     }
 
     companion object {

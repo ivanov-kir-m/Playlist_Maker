@@ -4,4 +4,5 @@ data class SearchViewState(
     val playButtonEnabled: Boolean,
     val playButtonImage: Int,
     val playTextTime: String,
+    val favoriteBtn: Boolean,
 )
