@@ -1,18 +1,21 @@
 package com.practicum.playlistmaker.ui.search.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker.domain.CLICK_ITEM_DELAY
 import com.practicum.playlistmaker.domain.player.model.Track
 import com.practicum.playlistmaker.domain.search.SearchInteractor
 import com.practicum.playlistmaker.ui.search.view_model.model.SearchState
 import com.practicum.playlistmaker.utils.Resource
+import com.practicum.playlistmaker.utils.debounce
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewModel() {
 
-    private val handler = Handler(Looper.getMainLooper())
+    private var isClickAllowed = true
 
     private var lastSearchText = ""
 
@@ -23,45 +26,61 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         getHistoryList()
     }
 
+    private val tracksSearchDebounce =
+        debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { searchText ->
+            searchTrackList(searchText)
+        }
+
     fun searchTrackList(query: String) {
-        handler.removeCallbacksAndMessages(null)
         if (query.isNotEmpty()) {
-            query.let {
-                _stateLiveData.postValue(SearchState.Loading)
-                searchInteractor.searchTrackList(query, object : SearchInteractor.SearchConsumer {
-                    override fun consume(
-                        foundTracks: List<Track>?,
-                        errorMassage: String?
-                    ) {
-                        when (errorMassage) {
-                            null -> {
-                                val tracks = arrayListOf<Track>()
-                                if (foundTracks != null) {
-                                    tracks.addAll(foundTracks)
-                                }
-                                _stateLiveData.postValue(SearchState.SearchResult(tracks = tracks))
-                            }
-                            Resource.NOT_FOUND -> {
-                                _stateLiveData.postValue(SearchState.Error(errorMassage))
-                            }
-                            else -> {
-                                _stateLiveData.postValue(SearchState.Error(Resource.CONNECTION_ERROR))
-                            }
-                        }
+            _stateLiveData.postValue(SearchState.Loading)
+
+            viewModelScope.launch {
+                searchInteractor
+                    .searchTrackList(query)
+                    .collect { pair ->
+                        processResult(pair.first, pair.second)
                     }
-                })
             }
         }
     }
 
+    fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewModelScope.launch {
+                delay(CLICK_ITEM_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
+    }
+
     fun searchDebounce(changedText: String) {
-        handler.removeCallbacksAndMessages(null)
         if (lastSearchText != changedText) {
-            handler.postDelayed({
-                searchTrackList(changedText)
-            }, SEARCH_DEBOUNCE_DELAY)
+            tracksSearchDebounce(changedText)
             lastSearchText = changedText
         }
+    }
+
+    private fun processResult(foundTrack: List<Track>?, errorMessage: String?) {
+        when (errorMessage) {
+            null -> {
+                val tracks = arrayListOf<Track>()
+                if (foundTrack != null) {
+                    tracks.addAll(foundTrack)
+                }
+                _stateLiveData.postValue(SearchState.SearchResult(tracks = tracks))
+            }
+            Resource.NOT_FOUND -> {
+                _stateLiveData.postValue(SearchState.Error(errorMessage))
+            }
+            else -> {
+                _stateLiveData.postValue(SearchState.Error(Resource.CONNECTION_ERROR))
+            }
+        }
+
     }
 
     fun saveTrackToHistory(track: Track) {
@@ -84,11 +103,6 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
 
     private fun historyIsNotEmpty(): Boolean {
         return searchInteractor.getHistoryList().isNotEmpty()
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        handler.removeCallbacksAndMessages(null)
     }
 
     companion object {

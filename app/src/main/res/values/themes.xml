@@ -27,11 +27,13 @@
 
         <item name="actionBarSize">60dp</item>
     </style>
+
     <style name="Theme.PlaylistMaker.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="Theme.PlaylistMaker.AppBarOverlay"
-        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.PlaylistMaker.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="Theme.PlaylistMaker.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

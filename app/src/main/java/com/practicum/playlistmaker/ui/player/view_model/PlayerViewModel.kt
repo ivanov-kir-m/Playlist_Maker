@@ -1,15 +1,17 @@
 package com.practicum.playlistmaker.ui.player.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.domain.*
 import com.practicum.playlistmaker.domain.player.PlayerInteractor
 import com.practicum.playlistmaker.ui.search.view_model.model.SearchViewState
 import com.practicum.playlistmaker.utils.DateUtils.millisToStrFormat
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PlayerViewModel(private val player: PlayerInteractor) : ViewModel() {
 
@@ -24,15 +26,14 @@ class PlayerViewModel(private val player: PlayerInteractor) : ViewModel() {
 
     val searchViewState: LiveData<SearchViewState> get() = _searchViewState
 
-    private var mainThreadHandler = Handler(Looper.getMainLooper())
-
-    init {
-        conditionPlayButton()
-    }
+    private var timerJob: Job? = null
 
     fun prepareTrack(url: String) {
         if (player.getPlayerState() == STATE_DEFAULT) {
             player.prepareTrack(url)
+            _searchViewState.value = _searchViewState.value?.copy(
+                playButtonEnabled = true
+            )
         }
     }
 
@@ -44,6 +45,7 @@ class PlayerViewModel(private val player: PlayerInteractor) : ViewModel() {
             STATE_PREPARED, STATE_PAUSED -> {
                 startPlayer()
             }
+            else -> {}
         }
     }
 
@@ -53,7 +55,7 @@ class PlayerViewModel(private val player: PlayerInteractor) : ViewModel() {
         _searchViewState.value = _searchViewState.value?.copy(
             playButtonImage = R.drawable.icn_pause
         )
-        updateTimeAndButton()
+        startTimer()
     }
 
     fun pausePlayer() {
@@ -61,56 +63,26 @@ class PlayerViewModel(private val player: PlayerInteractor) : ViewModel() {
         _searchViewState.value = _searchViewState.value?.copy(
             playButtonImage = R.drawable.icn_play
         )
-        mainThreadHandler.removeCallbacksAndMessages(null)
-    }
-
-    private fun updateTimeAndButton() {
-        var lastCurrentTime = REFRESH_PLAY_TIME_MILLIS
-        _searchViewState.value = _searchViewState.value?.copy(
-            playTextTime = millisToStrFormat(player.getCurrentTime())
-        )
-        mainThreadHandler.postDelayed(
-            object : Runnable {
-                override fun run() {
-                    val currentTime = player.getCurrentTime()
-                    if (currentTime < REFRESH_PLAY_TIME_MILLIS && lastCurrentTime != currentTime) {
-                        lastCurrentTime = currentTime
-                        _searchViewState.value = _searchViewState.value?.copy(
-                            playTextTime = millisToStrFormat(currentTime)
-                        )
-                    } else {
-                        lastCurrentTime = REFRESH_PLAY_TIME_MILLIS
-                        _searchViewState.value = _searchViewState.value?.copy(
-                            playButtonImage = R.drawable.icn_play,
-                            playTextTime = millisToStrFormat(START_PLAY_TIME_MILLIS)
-                        )
-                    }
-                    // И снова планируем то же действие через 0.5 сек
-                    mainThreadHandler.postDelayed(
-                        this,
-                        DELAY_MILLIS
-                    )
-                }
-            }, DELAY_MILLIS
-        )
-    }
-
-    private fun conditionPlayButton() {
-        mainThreadHandler.postDelayed(
-            object : Runnable {
-                override fun run() {
-                    _searchViewState.value = _searchViewState.value?.copy(
-                        playButtonEnabled = player.getPlayerState() != STATE_DEFAULT
-                    )
-                    mainThreadHandler.postDelayed(this, DELAY_MILLIS)
-                }
-            }, DELAY_MILLIS
-        )
+        timerJob?.cancel()
     }
 
     override fun onCleared() {
         super.onCleared()
-        mainThreadHandler.removeCallbacksAndMessages(null)
         player.releasePlayer()
+    }
+
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            while (player.getPlayerState() == STATE_PLAYING) {
+                delay(DELAY_MILLIS)
+                _searchViewState.value = _searchViewState.value?.copy(
+                    playTextTime = millisToStrFormat(player.getCurrentTime())
+                )
+            }
+            _searchViewState.value = _searchViewState.value?.copy(
+                playButtonImage = R.drawable.icn_play,
+                playTextTime = millisToStrFormat(START_PLAY_TIME_MILLIS)
+            )
+        }
     }
 }
