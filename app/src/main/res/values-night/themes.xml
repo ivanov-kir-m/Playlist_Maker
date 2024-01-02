@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/as_color_item</item>
+        <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">@color/color_bg_sub</item>
         <item name="colorOnPrimary">@color/color_bg_sub2</item>
         <item name="colorControlNormal">@color/color_bg_sub2</item>
@@ -13,7 +13,7 @@
         <item name="colorOnSecondary">@color/main_icn</item>
         #FF000000 black
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/color_status_bar</item>
+        <item name="android:statusBarColor">@color/main_icn</item>
 
         <item name="colorAccent">@color/color_pb</item>
         #1A1B22 color_bg_dark

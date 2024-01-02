@@ -8,13 +8,18 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.domain.*
 import com.practicum.playlistmaker.domain.player.PlayerInteractor
 import com.practicum.playlistmaker.domain.player.model.Track
+import com.practicum.playlistmaker.domain.playlists.PlaylistsInteractor
+import com.practicum.playlistmaker.domain.playlists.model.Playlist
 import com.practicum.playlistmaker.ui.search.view_model.model.SearchViewState
 import com.practicum.playlistmaker.utils.DateUtils.millisToStrFormat
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class PlayerViewModel(private val player: PlayerInteractor) : ViewModel() {
+class PlayerViewModel(
+    private val player: PlayerInteractor,
+    private val playlistsInteractor: PlaylistsInteractor,
+) : ViewModel() {
 
     private val _searchViewState = MutableLiveData(
         // Это дефолтный стейт экрана, который будет применён сразу после открытия
@@ -22,7 +27,10 @@ class PlayerViewModel(private val player: PlayerInteractor) : ViewModel() {
             playButtonEnabled = false,
             playButtonImage = R.drawable.icn_play,
             playTextTime = millisToStrFormat(START_PLAY_TIME_MILLIS),
-            favoriteBtn = false
+            favoriteBtn = false,
+            playlists = emptyList(),
+            playlistPanelHide = false,
+            thereTrackInPlaylist = false
         )
     )
 
@@ -43,7 +51,36 @@ class PlayerViewModel(private val player: PlayerInteractor) : ViewModel() {
         }
     }
 
-    fun favoriteButtonFunction() {
+    fun getPlaylists() {
+        viewModelScope.launch {
+            playlistsInteractor
+                .getAllPlaylist()
+                .collect { list ->
+                    _searchViewState.value = _searchViewState.value?.copy(
+                        playlists = list
+                    )
+                }
+        }
+    }
+
+
+    fun addIdTrackToPlaylist(playlist: Playlist) {
+        if (playlist.idsList.contains(track.trackId)) {
+            _searchViewState.value = _searchViewState.value?.copy(
+                thereTrackInPlaylist = true
+            )
+        } else {
+            viewModelScope.launch {
+                playlistsInteractor.addIdTrackToPlaylist(track, playlist)
+            }
+            _searchViewState.value = _searchViewState.value?.copy(
+                thereTrackInPlaylist = false,
+                playlistPanelHide = true
+            )
+        }
+    }
+
+    fun favoriteBtnFunction() {
         when (track.isFavorite) {
             true -> deleteFavoriteTrack()
             false -> addTrackToFavorites()
