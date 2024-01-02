@@ -23,7 +23,7 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         @Suppress("DEPRECATION") val track = intent.getSerializableExtra(TRACK) as Track
-        viewModel.prepareTrack(track.previewUrl)
+        viewModel.prepareTrack(track)
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -32,12 +32,21 @@ class PlayerActivity : AppCompatActivity() {
             binding.playBtn.isEnabled = state.playButtonEnabled
             binding.playBtn.setImageResource(state.playButtonImage)
             binding.playTime.text = state.playTextTime
+            binding.favouritesBtn.setImageResource(
+                if (state.favoriteBtn) {
+                    R.drawable.icn_is_favorites
+                } else {
+                    R.drawable.icn_favourites
+                }
+            )
         }
         binding.playBtn.setOnClickListener {
             viewModel.playbackControl()
         }
 
-        binding.trackNameText.text = track.trackName
+        binding.favouritesBtn.setOnClickListener {
+            viewModel.favoriteButtonFunction()
+        }
 
         binding.artistNameText.text = track.artistName
 
