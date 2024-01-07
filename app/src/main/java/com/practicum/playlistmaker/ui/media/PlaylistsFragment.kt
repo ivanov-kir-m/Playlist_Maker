@@ -59,8 +59,6 @@ class PlaylistsFragment : Fragment() {
         placeholderImage = binding.ivImagePh
         progressBar = binding.pbPlaylists
 
-        vmPlaylist.fillData()
-
         vmPlaylist.stateLiveData.observe(viewLifecycleOwner) {
             render(it)
         }

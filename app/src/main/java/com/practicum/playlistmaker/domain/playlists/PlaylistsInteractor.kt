@@ -12,5 +12,5 @@ interface PlaylistsInteractor {
 
     fun playlistIsAlready(name: String): Flow<Boolean>
 
-    suspend fun addIdTrackToPlaylist(track: Track, playlist: Playlist)
+    suspend fun addTrackToPlaylist(track: Track, playlist: Playlist)
 }

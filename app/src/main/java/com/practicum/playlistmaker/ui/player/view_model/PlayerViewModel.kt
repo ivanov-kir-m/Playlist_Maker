@@ -29,10 +29,12 @@ class PlayerViewModel(
             playTextTime = millisToStrFormat(START_PLAY_TIME_MILLIS),
             favoriteBtn = false,
             playlists = emptyList(),
-            playlistPanelHide = false,
             thereTrackInPlaylist = false
         )
     )
+
+    private val _playlistPanelHide = MutableLiveData<Boolean>()
+    val playlistPanelHide: LiveData<Boolean> get() = _playlistPanelHide
 
     val searchViewState: LiveData<SearchViewState> get() = _searchViewState
 
@@ -64,19 +66,20 @@ class PlayerViewModel(
     }
 
 
-    fun addIdTrackToPlaylist(playlist: Playlist) {
-        if (playlist.idsList.contains(track.trackId)) {
+    fun addTrackToPlaylist(playlist: Playlist) {
+        if (playlist.tracksList.contains(track)) {
             _searchViewState.value = _searchViewState.value?.copy(
                 thereTrackInPlaylist = true
             )
         } else {
             viewModelScope.launch {
-                playlistsInteractor.addIdTrackToPlaylist(track, playlist)
+                playlistsInteractor.addTrackToPlaylist(track, playlist)
+                getPlaylists()
             }
             _searchViewState.value = _searchViewState.value?.copy(
                 thereTrackInPlaylist = false,
-                playlistPanelHide = true
             )
+            _playlistPanelHide.value = true
         }
     }
 

@@ -24,4 +24,5 @@
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#FFFFFFFF</color>
     <color name="separator">#FFFFFFFF</color>
     <color name="light_grey">#E6E8EB</color>
+    <color name="playlist_item_text">#FFFFFFFF</color>
 </resources>

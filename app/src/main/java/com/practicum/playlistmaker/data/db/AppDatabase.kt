@@ -6,14 +6,14 @@ import com.practicum.playlistmaker.data.favorites.db.dao.FavoritesDao
 import com.practicum.playlistmaker.data.favorites.db.entity.TrackEntity
 import com.practicum.playlistmaker.data.playlists.db.dao.PlaylistsDao
 import com.practicum.playlistmaker.data.playlists.db.entity.PlaylistEntity
-import com.practicum.playlistmaker.data.playlists.db.entity.TrackAllPlaylistsEntity
+import com.practicum.playlistmaker.data.playlists.db.entity.PlaylistTracks
 
 @Database(
-    version = 4,
+    version = 7,
     entities = [
         TrackEntity::class,
         PlaylistEntity::class,
-        TrackAllPlaylistsEntity::class,
+        PlaylistTracks::class,
     ],
     exportSchema = false
 )

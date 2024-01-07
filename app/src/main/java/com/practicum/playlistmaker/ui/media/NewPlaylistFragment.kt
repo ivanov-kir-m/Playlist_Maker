@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.ui.media
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,11 +22,7 @@ class NewPlaylistFragment : Fragment() {
 
     private var _binding: FragmentNewPlaylistBinding? = null
     private val binding get() = _binding!!
-    private val vM: NewPlaylistViewModel by viewModel()
-
-    private var pictureUri: Uri? = null
-    private var nameTextChanged: Boolean = false
-    private var descriptionTextChanged: Boolean = false
+    private val viewModel: NewPlaylistViewModel by viewModel()
 
 
     override fun onCreateView(
@@ -59,28 +54,30 @@ class NewPlaylistFragment : Fragment() {
         binding.etName.doOnTextChanged { text, _, _, _ ->
             if (!text.isNullOrEmpty()) {
                 binding.btnCreate.isEnabled = true
-                nameTextChanged = true
-                vM.playlistIsAlready(text.toString())
+                viewModel.setNameTextChanged(true)
+                viewModel.playlistIsAlready(text.toString())
             } else {
                 binding.btnCreate.isEnabled = false
-                nameTextChanged = false
+                viewModel.setNameTextChanged(false)
             }
         } // слущатель изменени названия для активации кнопки создания и меняет флаг изменения имени
 
         binding.etDescription.doOnTextChanged { text, _, _, _ ->
-            descriptionTextChanged = !text.isNullOrEmpty()
+            viewModel.setDescriptionTextChanged(!text.isNullOrEmpty())
         } // слушатель меняет флаг изменнения описания
 
         //регистрируем событие, которое вызывает photo picker
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 //обрабатываем событие выбора пользователем фотографии
-                pictureUri = if (uri != null) {
-                    binding.ivArtwork.setImageURI(uri)
-                    uri
-                } else {
-                    null
-                }
+                viewModel.setPictureUri(
+                    if (uri != null) {
+                        binding.ivArtwork.setImageURI(uri)
+                        uri
+                    } else {
+                        null
+                    }
+                )
             }
 
         binding.ivArtwork.setOnClickListener {
@@ -90,24 +87,19 @@ class NewPlaylistFragment : Fragment() {
 
         binding.btnCreate.setOnClickListener {
             val name = binding.etName.text.toString()
-            vM.playlistIsAlready(name)
-            if (vM.playlistAlready.value == true) {
+            viewModel.playlistIsAlready(name)
+            if (viewModel.newPlaylistViewState.value?.playlistAlready == true) {
                 Toast.makeText(
                     requireContext(),
                     requireContext().getString(R.string.playlist_is_already, name),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                vM.saveData(
+                viewModel.saveData(
+                    requireContext(),
                     name = name,
                     description = binding.etDescription.text.toString(),
-                    pictureUri = this.pictureUri
                 )
-                Toast.makeText(
-                    requireContext(),
-                    requireContext().getString(R.string.add_new_playlist_massage, name),
-                    Toast.LENGTH_SHORT
-                ).show()
                 findNavController().popBackStack()
             }
         }
@@ -135,7 +127,11 @@ class NewPlaylistFragment : Fragment() {
     }
 
     private fun dataIsFilled(): Boolean {
-        return pictureUri != null || nameTextChanged || descriptionTextChanged
+        return (
+                viewModel.newPlaylistViewState.value?.pictureUri != null ||
+                        viewModel.newPlaylistViewState.value?.nameTextChanged == true ||
+                        viewModel.newPlaylistViewState.value?.descriptionTextChanged == true
+                )
     }
 
     companion object {

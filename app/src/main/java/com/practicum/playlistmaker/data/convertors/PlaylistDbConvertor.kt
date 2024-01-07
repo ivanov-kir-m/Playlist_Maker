@@ -1,37 +1,46 @@
 package com.practicum.playlistmaker.data.convertors
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import androidx.core.net.toUri
+import com.practicum.playlistmaker.data.db.AppDatabase
+import com.practicum.playlistmaker.data.favorites.db.entity.TrackEntity
 import com.practicum.playlistmaker.data.playlists.db.entity.PlaylistEntity
-import com.practicum.playlistmaker.data.playlists.db.entity.TrackAllPlaylistsEntity
+import com.practicum.playlistmaker.data.playlists.db.entity.PlaylistTracks
+import com.practicum.playlistmaker.data.playlists.db.entity.PlaylistWithTracks
 import com.practicum.playlistmaker.domain.player.model.Track
 import com.practicum.playlistmaker.domain.playlists.model.Playlist
 
-class PlaylistDbConvertor(private val gson: Gson) {
+class PlaylistDbConvertor(
+    private val appDatabase: AppDatabase,
+) {
     fun map(playlist: Playlist): PlaylistEntity {
         return PlaylistEntity(
-            playlist.id,
-            playlist.name,
-            playlist.description,
-            playlist.pictureName,
-            gson.toJson(playlist.idsList),
-            playlist.numbersOfTrack
+            name = playlist.name,
+            description = playlist.description,
+            pictureName = playlist.picture.toString(),
         )
     }
 
-    fun map(playlist: PlaylistEntity): Playlist {
+    fun map(playlist_tracks: PlaylistWithTracks): Playlist {
+        val tracksList = playlist_tracks.tracks.map { track -> this.map(track) }
         return Playlist(
-            playlist.id,
-            playlist.name,
-            playlist.description,
-            playlist.pictureName,
-            idsList = gson.fromJson(playlist.idsListGson, object : TypeToken<List<Int>>() {}.type),
-            playlist.numbersOfTrack
+            playlist_tracks.playlist.playlistId,
+            playlist_tracks.playlist.name,
+            playlist_tracks.playlist.description,
+            playlist_tracks.playlist.pictureName?.toUri(),
+            tracksList,
+            tracksList.size,
         )
     }
 
-    fun map(track: Track): TrackAllPlaylistsEntity {
-        return TrackAllPlaylistsEntity(
+    fun map(playlist: Playlist, track: Track): PlaylistTracks {
+        return PlaylistTracks(
+            playlist.playlistId,
+            track.trackId,
+        )
+    }
+
+    fun map(track: TrackEntity): Track {
+        return Track(
             track.trackId,
             track.trackName,
             track.artistName,
@@ -46,8 +55,8 @@ class PlaylistDbConvertor(private val gson: Gson) {
         )
     }
 
-    fun map(track: TrackAllPlaylistsEntity): Track {
-        return Track(
+    fun map(track: Track): TrackEntity {
+        return TrackEntity(
             track.trackId,
             track.trackName,
             track.artistName,

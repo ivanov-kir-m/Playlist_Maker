@@ -88,9 +88,11 @@ class PlayerFragment : Fragment() {
             )
             adapterPlaylist.playlists = state.playlists
             adapterPlaylist.notifyDataSetChanged()
-            if (state.playlistPanelHide) bottomSheetBehavior.state =
-                BottomSheetBehavior.STATE_HIDDEN
 
+        }
+
+        viewModel.playlistPanelHide.observe(this) {
+            if (it) bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
 
         binding.btnFavorites.setOnClickListener {
@@ -141,8 +143,7 @@ class PlayerFragment : Fragment() {
     }
 
     private fun clickOnPlaylist(playlist: Playlist) {
-        viewModel.addIdTrackToPlaylist(playlist)
-        viewModel.getPlaylists()
+        viewModel.addTrackToPlaylist(playlist)
         when (viewModel.searchViewState.value?.thereTrackInPlaylist) {
             true -> {
                 Toast.makeText(
@@ -169,6 +170,7 @@ class PlayerFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding = null
         rvPlaylist = null
     }
 }

@@ -16,6 +16,10 @@ class PlaylistsViewModel(
     private val _stateLiveData = MutableLiveData<PlaylistsState>()
     val stateLiveData: LiveData<PlaylistsState> = _stateLiveData
 
+    init {
+        this.fillData()
+    }
+
     fun fillData() {
         renderState(PlaylistsState.Loading)
         viewModelScope.launch {

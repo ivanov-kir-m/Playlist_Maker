@@ -6,9 +6,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
+import androidx.core.net.toUri
 import com.practicum.playlistmaker.data.convertors.PlaylistDbConvertor
 import com.practicum.playlistmaker.data.db.AppDatabase
-import com.practicum.playlistmaker.data.playlists.db.entity.PlaylistEntity
+import com.practicum.playlistmaker.data.playlists.db.entity.PlaylistWithTracks
 import com.practicum.playlistmaker.domain.IMAGE_QUALITY
 import com.practicum.playlistmaker.domain.PLAYLISTS_IMAGE_DIRECTORY
 import com.practicum.playlistmaker.domain.player.model.Track
@@ -35,12 +36,11 @@ class PlaylistsRepositoryImpl(
             .addPlaylistEntity(
                 convertor.map(
                     Playlist(
-                        id = null,
                         name = name,
                         description = description,
-                        pictureName = saveImageAndTakeName(pictureUri),
-                        idsList = listOf(),
-                        numbersOfTrack = 0
+                        picture = saveImageAndTakeName(pictureUri),
+                        tracksList = listOf(),
+                        numbersOfTrack = 0,
                     )
                 )
             )
@@ -58,12 +58,12 @@ class PlaylistsRepositoryImpl(
         return flow {
             val playlists = appDatabase
                 .playlistsDao()
-                .getAllPlaylist()
+                .getPlaylistsWithTracks()
             emit(convertFromPlaylistEntity(playlists))
         }
     }
 
-    private fun saveImageAndTakeName(uri: Uri?): String? {
+    private fun saveImageAndTakeName(uri: Uri?): Uri? {
         if (uri == null) return null
         val imageName = System.currentTimeMillis().toString() + ".jpg"
         val filePath = File(
@@ -85,28 +85,20 @@ class PlaylistsRepositoryImpl(
             .decodeStream(inputStream)
             .compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, outputStream)
 
-        return imageName
+        val imageFile = File(filePath, imageName)
+        return imageFile.toUri()
     }
 
-    override suspend fun addIdTrackToPlaylist(track: Track, playlist: Playlist) {
-        val newListTrack = mutableListOf<Int>()
-        newListTrack.apply {
-            addAll(playlist.idsList)
-            add(track.trackId)
-        }
-        val updatedPlaylist = playlist.copy(
-            idsList = newListTrack.toList(),
-            numbersOfTrack = playlist.numbersOfTrack + 1
+    override suspend fun addTrackToPlaylist(track: Track, playlist: Playlist) {
+        appDatabase
+            .favoritesDao()
+            .insertTrackEntity(convertor.map(track))
+        appDatabase.playlistsDao().addTrackToPlaylists(
+            convertor.map(playlist, track)
         )
-        appDatabase.playlistsDao().updatePlaylist(convertor.map(updatedPlaylist))
-        appDatabase.playlistsDao().addTrackToPlaylists(convertor.map(track))
     }
 
-    private fun convertFromPlaylistEntity(playlists: List<PlaylistEntity>): List<Playlist> {
-        return playlists.map { playlist -> convertor.map(playlist) }
-    }
-
-    private fun convertToPlaylistEntity(playlists: List<Playlist>): List<PlaylistEntity> {
+    private fun convertFromPlaylistEntity(playlists: List<PlaylistWithTracks>): List<Playlist> {
         return playlists.map { playlist -> convertor.map(playlist) }
     }
 }

@@ -1,16 +1,13 @@
 package com.practicum.playlistmaker.ui.player.adapter
 
-import android.os.Environment
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.domain.PLAYLISTS_IMAGE_DIRECTORY
 import com.practicum.playlistmaker.domain.playlists.model.Playlist
-import java.io.File
 
 class PlaylistLinerViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater
@@ -21,12 +18,6 @@ class PlaylistLinerViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     private val tvName: TextView = itemView.findViewById(R.id.tv_playlist_name)
     private val tvCountTrack: TextView = itemView.findViewById(R.id.tv_count_tracks)
 
-
-    private val filePath = File(
-        parentView.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-        PLAYLISTS_IMAGE_DIRECTORY
-    )
-
     fun bind(model: Playlist) {
         tvName.text = model.name
         tvCountTrack.text = tvCountTrack.resources.getQuantityString(
@@ -35,11 +26,14 @@ class PlaylistLinerViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
             model.numbersOfTrack,
         )
 
-        if (model.pictureName.isNullOrEmpty()) {
-            ivArtwork.setImageResource(R.drawable.default_art)
+        if (
+            model.picture != null &&
+            model.picture.toString() != "null" &&
+            !model.picture.equals(Uri.EMPTY)
+        ) {
+            ivArtwork.setImageURI(model.picture)
         } else {
-            val file = File(filePath, model.pictureName)
-            ivArtwork.setImageURI(file.toUri())
+            ivArtwork.setImageResource(R.drawable.default_art)
         }
 
     }

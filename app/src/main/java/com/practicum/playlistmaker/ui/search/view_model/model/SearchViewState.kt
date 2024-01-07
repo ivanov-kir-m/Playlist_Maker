@@ -8,6 +8,5 @@ data class SearchViewState(
     val playTextTime: String,
     val favoriteBtn: Boolean,
     val playlists: List<Playlist>,
-    val playlistPanelHide: Boolean,
     val thereTrackInPlaylist: Boolean,
 )

@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/padding_playlist_item_hor"
         app:cardCornerRadius="@dimen/art_work_radius_player"
-        app:cardElevation="0dp">
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/background_frag">
 
         <ImageView
             android:id="@+id/iv_artwork_item"
