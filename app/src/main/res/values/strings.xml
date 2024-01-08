@@ -32,5 +32,27 @@
     <string name="playlists">Плейлисты</string>
     <string name="no_media">Вы не создали\nни одного плейлиста</string>
     <string name="title_activity_root" translatable="false">RootActivity</string>
+    <string name="tb_new_playlist_title">New playlist</string>
+    <string name="et_new_playlist_name">Name*</string>
+    <string name="et_new_playlist_description">Description</string>
+    <string name="btn_new_playlist_create">Create</string>
+    <string name="unsaved_data_lost">All unsaved data will be lost</string>
+    <string name="finish_create_playlist">Finish creating a playlist?</string>
+    <string name="add_new_playlist_massage">"Playlist %1$s created"</string>
+    <string name="playlist_is_already">"The playlist with the name %1$s has already been created.\nEnter a different name."</string>
+    <string name="add_to_playlist">Add to playlist</string>
+    <string name="add_track_to_playlist">"Added to playlist %1$s."</string>
+    <string name="track_is_already_in_playlist">"Track has already added to playlist %1$s."</string>
+    Add to playlist
+    <plurals name="tracks_hint">
+        <item quantity="zero">%1$d tracks</item>
+        <item quantity="one">%1$d track</item>
+        <item quantity="two">%1$d track</item>
+        <item quantity="few">%1$d track</item>
+        <item quantity="many">%1$d tracks</item>
+        <item quantity="other">%1$d tracks</item>
+    </plurals>
+    <string name="cancel">"Cancel"</string>
+    <string name="finish">"Finish"</string>
 
 </resources>

@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.ui.media
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +7,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentFavouritesBinding
 import com.practicum.playlistmaker.domain.player.model.Track
 import com.practicum.playlistmaker.ui.media.view_model.FavoritesViewModel
-import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 import com.practicum.playlistmaker.ui.search.SearchFragment
 import com.practicum.playlistmaker.ui.search.adapter.TracksAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -75,41 +76,41 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun clickOnTrack(track: Track) {
-        val playerIntent = Intent(requireContext(), PlayerActivity::class.java).apply {
-            putExtra(SearchFragment.TRACK, track)
-        }
-        startActivity(playerIntent)
+        findNavController().navigate(
+            R.id.action_mediaLibraryFragment_to_playerFragment,
+            Bundle().apply { putSerializable(SearchFragment.TRACK, track) }
+        )
     }
 
     private fun render(state: FavoritesState) {
         when (state) {
             is FavoritesState.Content -> showContent(state.tracks)
-            is FavoritesState.Empty -> showEmpty(state.message)
+            is FavoritesState.Empty -> showEmpty()
             is FavoritesState.Loading -> showLoading()
         }
     }
 
     private fun showLoading() {
-        favoritesList.visibility = View.GONE
-        placeholderMessage.visibility = View.GONE
-        placeholderImage.visibility = View.GONE
-        progressBar.visibility = View.VISIBLE
+        favoritesList.isVisible = false
+        placeholderMessage.isVisible = false
+        placeholderImage.isVisible = false
+        progressBar.isVisible = true
     }
 
-    private fun showEmpty(message: String) {
-        favoritesList.visibility = View.GONE
-        placeholderMessage.visibility = View.VISIBLE
-        placeholderImage.visibility = View.VISIBLE
-        progressBar.visibility = View.GONE
+    private fun showEmpty() {
+        favoritesList.isVisible = false
+        placeholderMessage.isVisible = true
+        placeholderImage.isVisible = true
+        progressBar.isVisible = false
 
-        placeholderMessage.text = message
+        placeholderMessage.text = getString(R.string.media_library_empty)
     }
 
     private fun showContent(tracks: List<Track>) {
-        favoritesList.visibility = View.VISIBLE
-        placeholderMessage.visibility = View.GONE
-        placeholderImage.visibility = View.GONE
-        progressBar.visibility = View.GONE
+        favoritesList.isVisible = true
+        placeholderMessage.isVisible = false
+        placeholderImage.isVisible = false
+        progressBar.isVisible = false
 
         adapter?.tracks?.clear()
         adapter?.tracks?.addAll(tracks)

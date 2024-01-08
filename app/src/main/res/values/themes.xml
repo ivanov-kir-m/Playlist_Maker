@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimary">@color/black</item>
         #FFFFFFFF white
         <item name="colorPrimaryVariant">@color/color_bg_sub</item>
         #E6E8EB color_bg_light_grey

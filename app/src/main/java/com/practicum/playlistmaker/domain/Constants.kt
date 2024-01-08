@@ -11,4 +11,7 @@ const val APP_SETTINGS = "APP_SETTINGS"
 const val DARK_THEME = "DARK_THEME"
 
 const val CLICK_ITEM_DELAY = 1000L
+
 const val ITUNES_URL = "https://itunes.apple.com"
+const val IMAGE_QUALITY = 70
+const val PLAYLISTS_IMAGE_DIRECTORY = "playlist_directory"
