@@ -29,8 +29,8 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: SearchViewModel by viewModel()
 
-    private val trackAdapter = TracksAdapter { clickOnTrack(it) }
-    private val historyTrackAdapter = TracksAdapter { clickOnTrack(it) }
+    private val trackAdapter = TracksAdapter({ clickOnTrack(it) })
+    private val historyTrackAdapter = TracksAdapter({ clickOnTrack(it) })
 
     private lateinit var inputEditText: EditText
     private lateinit var clearButton: ImageView
@@ -56,7 +56,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.stateLiveData.observe(this) {
+        viewModel.stateLiveData.observe(viewLifecycleOwner) {
             showState(it)
         }
 

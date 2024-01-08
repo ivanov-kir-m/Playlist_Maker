@@ -66,16 +66,16 @@ class PlayerFragment : Fragment() {
                 }
             }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // binding.overlay.alpha = slideOffset
-            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
+
+        binding.overlay.setOnClickListener {}
 
         binding.btnAddToPlaylist.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
-        viewModel.searchViewState.observe(this) { state ->
+        viewModel.searchViewState.observe(viewLifecycleOwner) { state ->
             binding.btnPlay.isEnabled = state.playButtonEnabled
             binding.btnPlay.setImageResource(state.playButtonImage)
             binding.tvPlayTime.text = state.playTextTime
@@ -91,7 +91,7 @@ class PlayerFragment : Fragment() {
 
         }
 
-        viewModel.playlistPanelHide.observe(this) {
+        viewModel.playlistPanelHide.observe(viewLifecycleOwner) {
             if (it) bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
 

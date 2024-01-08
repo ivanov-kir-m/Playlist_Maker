@@ -31,7 +31,7 @@ class PlaylistLinerViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
             model.picture.toString() != "null" &&
             !model.picture.equals(Uri.EMPTY)
         ) {
-            ivArtwork.setImageURI(model.picture)
+            ivArtwork.setImageURI(Uri.parse(model.picture))
         } else {
             ivArtwork.setImageResource(R.drawable.default_art)
         }
