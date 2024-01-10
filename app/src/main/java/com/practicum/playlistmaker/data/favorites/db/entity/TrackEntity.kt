@@ -3,7 +3,7 @@ package com.practicum.playlistmaker.data.favorites.db.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "favorites_table")
+@Entity(tableName = "tracks_table")
 data class TrackEntity(
     @PrimaryKey
     val trackId: Int, //уникальный номемр трека

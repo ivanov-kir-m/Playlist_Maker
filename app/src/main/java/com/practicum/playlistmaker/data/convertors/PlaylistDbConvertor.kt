@@ -42,6 +42,7 @@ class PlaylistDbConvertor {
 
     fun map(playlist: Playlist, track: Track): PlaylistTracks {
         return PlaylistTracks(
+            0,
             playlist.playlistId,
             track.trackId,
         )

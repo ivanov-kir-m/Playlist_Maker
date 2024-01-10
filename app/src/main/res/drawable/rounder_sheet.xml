@@ -4,5 +4,5 @@
 
     <solid android:color="@color/background_frag" />
 
-    <corners android:radius="16dp" />
+    <corners android:radius="16px" />
 </shape>

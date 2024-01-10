@@ -56,10 +56,6 @@ class PlaylistsRepositoryImpl(
             )
     }
 
-    override suspend fun deletePlaylist(playlist: Playlist) {
-        TODO("Not yet implemented")
-    }
-
     override fun getAllPlaylist(): Flow<List<Playlist>> {
         return flow {
             val playlists = appDatabase

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -96,24 +97,24 @@ class PlaylistsFragment : Fragment() {
     }
 
     private fun showLoading() {
-        rvPlaylist?.visibility = View.GONE
-        placeholderMessage?.visibility = View.GONE
-        placeholderImage?.visibility = View.GONE
-        progressBar?.visibility = View.VISIBLE
+        rvPlaylist?.isVisible = false
+        placeholderMessage?.isVisible = false
+        placeholderImage?.isVisible = false
+        progressBar?.isVisible = true
     }
 
     private fun showEmpty() {
-        rvPlaylist?.visibility = View.GONE
-        placeholderMessage?.visibility = View.VISIBLE
-        placeholderImage?.visibility = View.VISIBLE
-        progressBar?.visibility = View.GONE
+        rvPlaylist?.isVisible = false
+        placeholderMessage?.isVisible = true
+        placeholderImage?.isVisible = true
+        progressBar?.isVisible = false
     }
 
     private fun showContent(playlists: List<Playlist>) {
-        rvPlaylist?.visibility = View.VISIBLE
-        placeholderMessage?.visibility = View.GONE
-        placeholderImage?.visibility = View.GONE
-        progressBar?.visibility = View.GONE
+        rvPlaylist?.isVisible = true
+        placeholderMessage?.isVisible = false
+        placeholderImage?.isVisible = false
+        progressBar?.isVisible = false
 
         adapter?.playlists = playlists
         adapter?.notifyDataSetChanged()

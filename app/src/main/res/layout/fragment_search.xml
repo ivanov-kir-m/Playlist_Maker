@@ -10,7 +10,7 @@
         style="@style/MenuTitleStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="60dp"
+        android:minHeight="56dp"
         android:text="@string/search" />
 
     <LinearLayout

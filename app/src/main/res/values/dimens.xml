@@ -6,7 +6,7 @@
     <dimen name="btn_corner_radius">16dp</dimen>
     <dimen name="icn_padding">10dp</dimen>
     <dimen name="main_indent">16dp</dimen>
-    <dimen name="main_height">60dp</dimen>
+    <dimen name="main_height">56dp</dimen>
     <dimen name="zero_dp">0dp</dimen>
     <dimen name="padding_search_string">20dp</dimen>
     <dimen name="padding_search_frame">12dp</dimen>
@@ -48,7 +48,9 @@
     <dimen name="dialog_text_size_title">16sp</dimen>
     <dimen name="margin_playlist_detail_16">16dp</dimen>
     <dimen name="margin_playlist_detail_8">8dp</dimen>
+    <dimen name="margin_playlist_detail_12">12dp</dimen>
     <dimen name="margin_playlist_detail_24">24dp</dimen>
+    <dimen name="margin_playlist_detail_220">220dp</dimen>
     <dimen name="text_playlist_detail_24">24sp</dimen>
     <dimen name="text_playlist_detail_18">18sp</dimen>
     <dimen name="ic_playlist_detail_24">24dp</dimen>

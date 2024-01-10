@@ -21,12 +21,9 @@ class PlaylistDetailsViewModel(
 
     private var playlist: Playlist? = null
 
-    fun showPlayList(playlist: Playlist) {
-        playlist.let {
-            showInfo(it)
-        }
-        getPlaylistWithTracksById(playlist.playlistId) {
-            showTracks(playlist)
+    fun showPlayList(playlistId: Int) {
+        getPlaylistWithTracksById(playlistId) {
+            showInfo()
         }
     }
 
@@ -44,33 +41,23 @@ class PlaylistDetailsViewModel(
         viewModelScope.launch {
             playlist?.playlistId?.let {
                 playlistsInteractor.deleteTrackFromAllPlaylist(track, it)
-                val playlistWithTracks = playlistsInteractor.getPlaylistWithTracksById(it)
-                if (playlistWithTracks != null)
-                    showTracks(playlistWithTracks)
+                playlist = playlistsInteractor.getPlaylistWithTracksById(it)
+                showInfo()
             }
         }
     }
 
-    private fun showInfo(playlist: Playlist) {
+    private fun showInfo() {
         renderState(
-            PlaylistsDetailsState.Info(
-                name = playlist.name,
-                description = playlist.description,
-                picture = Uri.parse(playlist.picture)
+            PlaylistsDetailsState(
+                name = playlist!!.name,
+                description = playlist!!.description,
+                picture = Uri.parse(playlist!!.picture),
+                tracksList = playlist!!.tracksList,
+                countTracks = playlist!!.tracksList.size,
+                timeTracksMillis = timeTracksMillis(playlist!!.tracksList)
             )
         )
-    }
-
-    private fun showTracks(playlist: Playlist) {
-        viewModelScope.launch {
-            renderState(
-                PlaylistsDetailsState.Tracks(
-                    tracksList = playlist.tracksList,
-                    countTracks = playlist.tracksList.size,
-                    timeTracksMillis = timeTracksMillis(playlist.tracksList)
-                )
-            )
-        }
     }
 
     fun deletePlaylist(onResultListener: () -> Unit) {
@@ -83,17 +70,16 @@ class PlaylistDetailsViewModel(
         }
     }
 
-    private fun getPlaylistById(playListId: Int, onResultListener: () -> Unit) {
+    private fun getPlaylistWithTracksById(
+        playListId: Int,
+        onResultListener: () -> Unit
+    ) {
         viewModelScope.launch {
-            playlist = playlistsInteractor.getPlaylistById(playListId)
-            onResultListener()
-        }
-    }
-
-    private fun getPlaylistWithTracksById(playListId: Int, onResultListener: () -> Unit) {
-        viewModelScope.launch {
-            playlist = playlistsInteractor.getPlaylistWithTracksById(playListId)
-            onResultListener()
+            val playlistWithTracks = playlistsInteractor.getPlaylistWithTracksById(playListId)
+            if (playlistWithTracks != null) {
+                playlist = playlistWithTracks
+                onResultListener()
+            }
         }
     }
 }

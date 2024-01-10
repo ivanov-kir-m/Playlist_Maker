@@ -19,14 +19,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="@dimen/margin_playlist_detail_16" />
+            app:layout_constraintBottom_toTopOf="@+id/rightBorder"
+            app:layout_constraintGuide_begin="@dimen/margin_playlist_detail_16"
+            app:layout_constraintTop_toBottomOf="@+id/iv_artwork_playlist" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/rightBorder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="891dp"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="@dimen/margin_playlist_detail_16" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintGuide_end="@dimen/margin_playlist_detail_16"
+            app:layout_constraintTop_toBottomOf="@+id/leftBorder" />
 
         <ImageView
             android:id="@+id/iv_artwork_playlist"
@@ -34,6 +39,7 @@
             android:layout_height="0dp"
             android:scaleType="centerCrop"
             android:src="@drawable/default_playlist_art"
+            app:layout_constraintBottom_toTopOf="@+id/leftBorder"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -116,8 +122,7 @@
             style="@style/PlaylistIcnStyle"
             android:layout_width="@dimen/ic_playlist_detail_24"
             android:layout_height="@dimen/ic_playlist_detail_24"
-            android:layout_marginTop="@dimen/margin_playlist_detail_8"
-            android:layout_marginBottom="@dimen/margin_playlist_detail_24"
+            android:layout_marginTop="@dimen/margin_playlist_detail_12"
             android:src="@drawable/share"
             app:layout_constraintStart_toStartOf="@+id/leftBorder"
             app:layout_constraintTop_toBottomOf="@+id/tv_time_tracks" />
@@ -129,7 +134,6 @@
             android:layout_height="@dimen/ic_playlist_detail_24"
             android:layout_marginStart="@dimen/margin_playlist_detail_8"
             android:layout_marginTop="@dimen/margin_playlist_detail_8"
-            android:layout_marginBottom="@dimen/margin_playlist_detail_24"
             android:src="@drawable/icn_menu"
             app:layout_constraintStart_toEndOf="@+id/iv_share_ic"
             app:layout_constraintTop_toBottomOf="@+id/tv_time_tracks" />

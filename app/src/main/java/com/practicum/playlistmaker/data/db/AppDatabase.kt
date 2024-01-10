@@ -9,7 +9,7 @@ import com.practicum.playlistmaker.data.playlists.db.entity.PlaylistEntity
 import com.practicum.playlistmaker.data.playlists.db.entity.PlaylistTracks
 
 @Database(
-    version = 9,
+    version = 1,
     entities = [
         TrackEntity::class,
         PlaylistEntity::class,

@@ -46,15 +46,15 @@ class SearchRepositoryImpl(
         return Track(
             trackId = trackDto.trackId,
             trackName = trackDto.trackName,
-            artistName = trackDto.artistName ?: "",
+            artistName = trackDto.artistName.orEmpty(),
             trackTimeMillis = trackDto.trackTimeMillis ?: 0,
-            artworkUrl100 = trackDto.artworkUrl100 ?: "",
-            artworkUrl60 = trackDto.artworkUrl60 ?: "",
-            collectionName = trackDto.collectionName ?: "",
-            releaseDate = trackDto.releaseDate ?: "",
-            primaryGenreName = trackDto.primaryGenreName ?: "",
-            country = trackDto.country ?: "",
-            previewUrl = trackDto.previewUrl ?: "",
+            artworkUrl100 = trackDto.artworkUrl100.orEmpty(),
+            artworkUrl60 = trackDto.artworkUrl60.orEmpty(),
+            collectionName = trackDto.collectionName.orEmpty(),
+            releaseDate = trackDto.releaseDate.orEmpty(),
+            primaryGenreName = trackDto.primaryGenreName.orEmpty(),
+            country = trackDto.country.orEmpty(),
+            previewUrl = trackDto.previewUrl.orEmpty(),
             isFavorite = trackIsFavorite(trackDto.trackId)
         )
     }

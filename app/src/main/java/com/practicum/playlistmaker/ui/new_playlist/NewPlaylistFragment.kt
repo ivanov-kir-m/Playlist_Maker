@@ -46,8 +46,33 @@ class NewPlaylistFragment : Fragment() {
         playlist = arguments?.getSerializable(PLAYLIST) as Playlist?
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun initPlaylist() {
+        playlist?.let {
+            binding.toolbarId.title = getString(R.string.editor)
+            binding.btnCreate.text = getString(R.string.save)
+            binding.btnCreate.isEnabled = true
+            if (
+                playlist?.picture != null &&
+                playlist?.picture.toString() != "null" &&
+                !playlist?.picture?.equals(Uri.EMPTY)!!
+            ) {
+                binding.ivArtwork.setImageURI(Uri.parse(playlist!!.picture!!))
+            }
+            binding.etName.setText(playlist?.name)
+            binding.etDescription.setText(playlist?.description)
+        }
+    }
+
+    private fun initListeners() {
+        binding.etName.doOnTextChanged { text, _, _, _ ->
+            binding.btnCreate.isEnabled = !text.isNullOrEmpty()
+            viewModel.setNameTextChanged(textChanged(text))
+            viewModel.playlistIsAlready(text.toString())
+        } // слущатель изменени названия для активации кнопки создания и меняет флаг изменения имени
+
+        binding.etDescription.doOnTextChanged { text, _, _, _ ->
+            viewModel.setDescriptionTextChanged(textChanged(text))
+        } // слушатель меняет флаг изменнения описания
 
         //Переопределил нажатие на кнопку назад
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -62,16 +87,6 @@ class NewPlaylistFragment : Fragment() {
         binding.toolbarId.setNavigationOnClickListener {
             showOrNotClosingDialog()
         } //бинд кнопки назад на тулбаре
-
-        binding.etName.doOnTextChanged { text, _, _, _ ->
-            binding.btnCreate.isEnabled = !text.isNullOrEmpty()
-            viewModel.setNameTextChanged(textChanged(text))
-            viewModel.playlistIsAlready(text.toString())
-        } // слущатель изменени названия для активации кнопки создания и меняет флаг изменения имени
-
-        binding.etDescription.doOnTextChanged { text, _, _, _ ->
-            viewModel.setDescriptionTextChanged(textChanged(text))
-        } // слушатель меняет флаг изменнения описания
 
         //регистрируем событие, которое вызывает photo picker
         val pickMedia =
@@ -91,7 +106,6 @@ class NewPlaylistFragment : Fragment() {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         } // запуск выбора картинки по нажатию на ImageView
 
-
         binding.btnCreate.setOnClickListener {
             val name = binding.etName.text.toString()
             viewModel.playlistIsAlready(name)
@@ -109,30 +123,6 @@ class NewPlaylistFragment : Fragment() {
                 findNavController().popBackStack()
             }
         }
-        viewModel.playlistCreatedEvent.observe(this, Observer {
-            it.getContentIfNotHandled()?.let { // Only proceed if the event has never been handled
-                Toast.makeText(
-                    requireContext(),
-                    requireContext().getString(R.string.add_new_playlist_massage, it),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
-
-        playlist?.let {
-            binding.toolbarId.title = getString(R.string.editor)
-            binding.btnCreate.text = getString(R.string.save)
-            binding.btnCreate.isEnabled = true
-            if (
-                playlist?.picture != null &&
-                playlist?.picture.toString() != "null" &&
-                !playlist?.picture?.equals(Uri.EMPTY)!!
-            ) {
-                binding.ivArtwork.setImageURI(Uri.parse(playlist!!.picture!!))
-            }
-            binding.etName.setText(playlist?.name)
-            binding.etDescription.setText(playlist?.description)
-        }
 
         binding.btnCreate.setOnClickListener {
             if (playlist == null) {
@@ -141,6 +131,27 @@ class NewPlaylistFragment : Fragment() {
                 updatePlaylist()
             }
         }
+    }
+
+    private fun setObserver() {
+        viewModel.newPlaylistViewState.observe(this, Observer {
+            it.playlistCreatedEvent?.getContentIfNotHandled()
+                ?.let { // Only proceed if the event has never been handled
+                    Toast.makeText(
+                        requireContext(),
+                        requireContext().getString(R.string.add_new_playlist_massage, it),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        })
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setObserver()
+        initListeners()
+        initPlaylist()
+
     }
 
     override fun onDestroyView() {
@@ -219,8 +230,6 @@ class NewPlaylistFragment : Fragment() {
     }
 
     companion object {
-
         fun newInstance() = NewPlaylistFragment()
-
     }
 }

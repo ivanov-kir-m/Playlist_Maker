@@ -58,10 +58,10 @@ class PlayerFragment : Fragment() {
 
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
-                        binding.overlay.visibility = View.GONE
+                        binding.overlay.isVisible = false
                     }
                     else -> {
-                        binding.overlay.visibility = View.VISIBLE
+                        binding.overlay.isVisible = true
                     }
                 }
             }

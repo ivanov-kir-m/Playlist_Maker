@@ -4,12 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.doOnPreDraw
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +32,7 @@ import com.practicum.playlistmaker.utils.DateUtils.millisToStrFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class PlaylistDetailsFragment : Fragment() {
 
@@ -62,11 +65,10 @@ class PlaylistDetailsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        playlist?.let { viewModel.showPlayList(it) }
+        playlist?.playlistId?.let { viewModel.showPlayList(it) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         binding.icBack.setOnClickListener {
             findNavController().popBackStack()
@@ -84,22 +86,33 @@ class PlaylistDetailsFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvPlaylist.adapter = adapter
 
-        playlist?.let { viewModel.showPlayList(it) }
-
 
         binding.ivShareIc.setOnClickListener {
             sharePlaylistOrNot()
         }
 
+        playlist?.playlistId?.let { viewModel.showPlayList(it) }
+
         binding.bottomSheetTracksList.doOnPreDraw {
-            val openMenuLocation = IntArray(2)
-            binding.ivShareIc.getLocationOnScreen(openMenuLocation)
-
-            val openMenuHeightFromBottom =
-                binding.root.height - openMenuLocation[1] - resources.getDimensionPixelSize(R.dimen.margin_playlist_detail_24)
-
+            var peekHeight =
+                PreferenceManager.getDefaultSharedPreferences(this.context).getInt("PEEKHEIGHT", 0)
+            if (peekHeight <= 0) {
+                val openMenuLocation = IntArray(2)
+                binding.ivShareIc.getLocationInWindow(openMenuLocation)
+                peekHeight =
+                    binding.root.height - openMenuLocation[1] - resources.getDimensionPixelSize(R.dimen.margin_playlist_detail_24)
+                super.onViewCreated(view, savedInstanceState)
+                @Suppress("DEPRECATION")
+                with(PreferenceManager.getDefaultSharedPreferences(this.context).edit()) {
+                    putInt("PEEKHEIGHT", peekHeight)
+                    apply()
+                }
+            }
             bottomSheetPlaylistBehavior = BottomSheetBehavior.from(binding.bottomSheetTracksList)
-            bottomSheetPlaylistBehavior?.peekHeight = openMenuHeightFromBottom
+            bottomSheetPlaylistBehavior?.setPeekHeight(
+                peekHeight,
+                false
+            ) // = 0 //openMenuHeightFromBottom //(binding.root.height * 0.2).toInt()
             bottomSheetPlaylistBehavior?.addBottomSheetCallback(object :
                 BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -129,11 +142,11 @@ class PlaylistDetailsFragment : Fragment() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
-                        binding.overlay.visibility = View.GONE
+                        binding.overlay.isVisible = false
                     }
 
                     else -> {
-                        binding.overlay.visibility = View.VISIBLE
+                        binding.overlay.isVisible = true
                     }
                 }
             }
@@ -158,7 +171,9 @@ class PlaylistDetailsFragment : Fragment() {
         binding.tvEditInfoMenu.setOnClickListener {
             findNavController().navigate(
                 R.id.action_playlistDetailsFragment_to_newPlaylistFragment,
-                Bundle().apply { putSerializable(PLAYLIST, playlist) }
+                Bundle().apply {
+                    putSerializable(PLAYLIST, playlist)
+                }
             )
 
         }
@@ -173,58 +188,64 @@ class PlaylistDetailsFragment : Fragment() {
         bottomSheetPlaylistBehavior = null
     }
 
-    private fun showPlaylist(state: PlaylistsDetailsState) {
-        when (state) {
-            is PlaylistsDetailsState.Info -> {
-                binding.tvNamePlaylist.text = state.name
-                binding.tvPlaylistNameMenu.text = state.name
+    private fun setNameAndDescription(state: PlaylistsDetailsState) {
+        binding.tvNamePlaylist.text = state.name
+        binding.tvPlaylistNameMenu.text = state.name
 
-                if (state.description.isEmpty()) {
-                    binding.tvDescriptionPlaylist.visibility = View.GONE
-                } else {
-                    binding.tvDescriptionPlaylist.text = state.description
-                }
-                if (
-                    state.picture != null &&
-                    state.picture.toString() != "null" &&
-                    !state.picture.equals(Uri.EMPTY)
-                ) {
-                    binding.ivArtworkPlaylist.setImageURI(state.picture)
-                    binding.ivMenuArt.setImageURI(state.picture)
-                } else {
-                    binding.ivArtworkPlaylist.setImageResource(R.drawable.default_playlist_art)
-                    binding.ivMenuArt.setImageResource(R.drawable.default_art)
-                }
-            }
-
-            is PlaylistsDetailsState.Tracks -> {
-                binding.tvCountTracks.text = requireContext().resources.getQuantityString(
-                    R.plurals.tracks_hint,
-                    state.countTracks,
-                    state.countTracks,
-                )
-                binding.tvCountTracksMenu.text = requireContext().resources.getQuantityString(
-                    R.plurals.tracks_hint,
-                    state.countTracks,
-                    state.countTracks,
-                )
-                binding.tvTimeTracks.text = minutesTracksInPlaylist(state.timeTracksMillis)
-                if (state.tracksList.isEmpty()) {
-                    adapter?.tracks?.clear()
-                    adapter?.notifyDataSetChanged()
-                    Toast.makeText(
-                        requireContext(),
-                        R.string.no_track_in_playlist,
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                } else {
-                    adapter?.tracks?.clear()
-                    adapter?.tracks?.addAll(state.tracksList)
-                    adapter?.invertList()
-                }
-            }
+        if (state.description.isEmpty()) {
+            binding.tvDescriptionPlaylist.isVisible = false
+        } else {
+            binding.tvDescriptionPlaylist.text = state.description
         }
+        binding.tvCountTracks.text = requireContext().resources.getQuantityString(
+            R.plurals.tracks_hint,
+            state.countTracks,
+            state.countTracks,
+        )
+        binding.tvCountTracksMenu.text = requireContext().resources.getQuantityString(
+            R.plurals.tracks_hint,
+            state.countTracks,
+            state.countTracks,
+        )
+        binding.tvTimeTracks.text = minutesTracksInPlaylist(state.timeTracksMillis)
+    }
+
+    private fun setPicture(state: PlaylistsDetailsState) {
+        if (
+            state.picture != null &&
+            state.picture.toString() != "null" &&
+            !state.picture.equals(Uri.EMPTY)
+        ) {
+            binding.ivArtworkPlaylist.setImageURI(state.picture)
+            binding.ivMenuArt.setImageURI(state.picture)
+        } else {
+            binding.ivArtworkPlaylist.setImageResource(R.drawable.default_playlist_art)
+            binding.ivMenuArt.setImageResource(R.drawable.default_art)
+        }
+    }
+
+    private fun setTracks(state: PlaylistsDetailsState) {
+        if (state.tracksList.isEmpty()) {
+            adapter?.tracks?.clear()
+            adapter?.notifyDataSetChanged()
+            Toast.makeText(
+                requireContext(),
+                R.string.no_track_in_playlist,
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        } else {
+            adapter?.tracks?.clear()
+            adapter?.tracks?.addAll(state.tracksList)
+            adapter?.invertList()
+        }
+    }
+
+    private fun showPlaylist(state: PlaylistsDetailsState) {
+        setNameAndDescription(state)
+        setPicture(state)
+        setTracks(state)
+
     }
 
     private fun minutesTracksInPlaylist(millis: Int): String {
@@ -291,10 +312,9 @@ class PlaylistDetailsFragment : Fragment() {
         if (playlistIsEmpty()) {
             Toast.makeText(requireContext(), R.string.empty_track_list, Toast.LENGTH_SHORT)
                 .show()
-            bottomSheetMenuBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
         } else {
             sharePlaylist()
-            bottomSheetMenuBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
         }
+        bottomSheetMenuBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
     }
 }

@@ -21,16 +21,15 @@ class NewPlaylistViewModel(
             nameTextChanged = false,
             descriptionTextChanged = false,
             playlistAlready = false,
+            playlistCreatedEvent = null,
         )
     )
     val newPlaylistViewState: LiveData<NewPlaylistState> get() = _newPlaylistViewState
 
-    private val _playlistCreatedEvent = MutableLiveData<Event<String>>()
-    val playlistCreatedEvent: LiveData<Event<String>>
-        get() = _playlistCreatedEvent
-
     fun onPlaylistCreated(name: String) {
-        _playlistCreatedEvent.value = Event(name)
+        _newPlaylistViewState.value = _newPlaylistViewState.value?.copy(
+            playlistCreatedEvent = Event(name)
+        )
     }
 
     fun playlistIsAlready(name: String) {
