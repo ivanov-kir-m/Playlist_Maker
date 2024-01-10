@@ -3,6 +3,7 @@ package com.practicum.playlistmaker.data.search.impl
 import com.practicum.playlistmaker.data.db.AppDatabase
 import com.practicum.playlistmaker.data.search.HistoryStorage
 import com.practicum.playlistmaker.data.search.NetworkClient
+import com.practicum.playlistmaker.data.search.network.model.TrackDto
 import com.practicum.playlistmaker.data.search.network.model.TrackResponse
 import com.practicum.playlistmaker.domain.player.model.Track
 import com.practicum.playlistmaker.domain.search.SearchRepository
@@ -29,19 +30,7 @@ class SearchRepositoryImpl(
                     emit(Resource.Error(Resource.NOT_FOUND))
                 } else {
                     val data = listResponse.results.map {
-                        Track(
-                            trackId = it.trackId,
-                            trackName = it.trackName,
-                            artistName = it.artistName,
-                            trackTimeMillis = it.trackTimeMillis,
-                            artworkUrl100 = it.artworkUrl100,
-                            collectionName = it.collectionName,
-                            releaseDate = it.releaseDate,
-                            primaryGenreName = it.primaryGenreName,
-                            country = it.country,
-                            previewUrl = it.previewUrl,
-                            isFavorite = trackIsFavorite(it.trackId),
-                        )
+                        trackDtoToTrack(it)
                     }
                     emit(Resource.Success(data))
                 }
@@ -51,6 +40,23 @@ class SearchRepositoryImpl(
             }
         }
 
+    }
+
+    private suspend fun trackDtoToTrack(trackDto: TrackDto): Track {
+        return Track(
+            trackId = trackDto.trackId,
+            trackName = trackDto.trackName,
+            artistName = trackDto.artistName.orEmpty(),
+            trackTimeMillis = trackDto.trackTimeMillis ?: 0,
+            artworkUrl100 = trackDto.artworkUrl100.orEmpty(),
+            artworkUrl60 = trackDto.artworkUrl60.orEmpty(),
+            collectionName = trackDto.collectionName.orEmpty(),
+            releaseDate = trackDto.releaseDate.orEmpty(),
+            primaryGenreName = trackDto.primaryGenreName.orEmpty(),
+            country = trackDto.country.orEmpty(),
+            previewUrl = trackDto.previewUrl.orEmpty(),
+            isFavorite = trackIsFavorite(trackDto.trackId)
+        )
     }
 
     override fun clearHistoryList() {

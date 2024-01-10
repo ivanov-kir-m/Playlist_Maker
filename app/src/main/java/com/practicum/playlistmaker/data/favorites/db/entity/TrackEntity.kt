@@ -3,7 +3,7 @@ package com.practicum.playlistmaker.data.favorites.db.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "favorites_table")
+@Entity(tableName = "tracks_table")
 data class TrackEntity(
     @PrimaryKey
     val trackId: Int, //уникальный номемр трека
@@ -11,6 +11,7 @@ data class TrackEntity(
     val artistName: String, // Имя исполнителя
     val trackTimeMillis: Int, // Продолжительность трека
     val artworkUrl100: String, // Ссылка на изображение обложки
+    val artworkUrl60: String,
     val collectionName: String, // Название альбома
     val releaseDate: String, // Год релиза трека
     val primaryGenreName: String, // Жанр трека

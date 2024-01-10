@@ -10,7 +10,7 @@
     <string name="am_btn_media_name">Медиа</string>
     <string name="support_msg">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="support_theme_msg">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
-    <string name="no_connection_msg">Проблемы со связью\\n\\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="no_connection_msg">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="not_found_msg">Ничего не нашлось</string>
     <string name="refresh_btn">ОБновить</string>
     <string name="search_title">Вы искали</string>
@@ -49,4 +49,26 @@
     </plurals>
     <string name="cancel">"Отмена"</string>
     <string name="finish">"Завершить"</string>
+    <string name="edit_playlist_massage">"Плейлист %1$s сохранен"</string>
+    <string name="yes">Да</string>
+    <string name="delete">Удалить</string>
+    <string name="delete_track">Удалить трек</string>
+    <string name="u_sure_delete_track">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="empty_track_list">В этом плейлисте нет списка треков,которым можно поделиться.</string>
+    <string name="share">Поделиться</string>
+    <string name="edit_info">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="u_sure_delete_playlist">Хотите удалить плейлист?</string>
+    <string name="editor">Редактировать</string>
+    <string name="save">Сохранить</string>
+    <string name="finish_update_playlist">Завершить редактирование?</string>
+    <string name="no_track_in_playlist">В плейлисте нет треков.</string>
+    <plurals name="minutes">
+        <item quantity="zero">%1$d минут</item>
+        <item quantity="one">%1$d минута</item>
+        <item quantity="two">%1$d минуты</item>
+        <item quantity="few">%1$d минуты</item>
+        <item quantity="many">%1$d минут</item>
+        <item quantity="other">%1$d минут</item>
+    </plurals>
 </resources>

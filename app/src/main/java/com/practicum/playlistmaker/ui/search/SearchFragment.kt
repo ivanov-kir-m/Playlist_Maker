@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,8 +30,8 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: SearchViewModel by viewModel()
 
-    private val trackAdapter = TracksAdapter { clickOnTrack(it) }
-    private val historyTrackAdapter = TracksAdapter { clickOnTrack(it) }
+    private val trackAdapter = TracksAdapter({ clickOnTrack(it) })
+    private val historyTrackAdapter = TracksAdapter({ clickOnTrack(it) })
 
     private lateinit var inputEditText: EditText
     private lateinit var clearButton: ImageView
@@ -56,7 +57,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.stateLiveData.observe(this) {
+        viewModel.stateLiveData.observe(viewLifecycleOwner) {
             showState(it)
         }
 
@@ -153,51 +154,51 @@ class SearchFragment : Fragment() {
     private fun showState(stateType: SearchState) {
         when (stateType) {
             is SearchState.Error -> {
-                recyclerViewTrack.visibility = View.GONE
-                errorPh.visibility = View.VISIBLE
-                titleHistory.visibility = View.GONE
-                clearHistoryButton.visibility = View.GONE
-                progressBar.visibility = View.GONE
+                recyclerViewTrack.isVisible = false
+                errorPh.isVisible = true
+                titleHistory.isVisible = false
+                clearHistoryButton.isVisible = false
+                progressBar.isVisible = false
                 if (stateType.errorMessage == Resource.CONNECTION_ERROR) {
                     errorIcnPlaceholder.setImageResource(R.drawable.icn_no_connection)
                     errorTextPh.setText(R.string.no_connection_msg)
-                    refreshButtPh.visibility = View.VISIBLE
+                    refreshButtPh.isVisible = true
                 } else {
                     errorIcnPlaceholder.setImageResource(R.drawable.icn_not_found)
                     errorTextPh.setText(R.string.not_found_msg)
-                    refreshButtPh.visibility = View.GONE
+                    refreshButtPh.isVisible = false
                 }
             }
             is SearchState.Loading -> {
-                recyclerViewTrack.visibility = View.GONE
-                errorPh.visibility = View.GONE
-                refreshButtPh.visibility = View.GONE
-                titleHistory.visibility = View.GONE
-                clearHistoryButton.visibility = View.GONE
-                progressBar.visibility = View.VISIBLE
+                recyclerViewTrack.isVisible = false
+                errorPh.isVisible = false
+                refreshButtPh.isVisible = false
+                titleHistory.isVisible = false
+                clearHistoryButton.isVisible = false
+                progressBar.isVisible = true
             }
             is SearchState.SearchResult -> {
                 trackAdapter.tracks = stateType.tracks
                 recyclerViewTrack.adapter = trackAdapter
                 trackAdapter.notifyDataSetChanged()
-                recyclerViewTrack.visibility = View.VISIBLE
-                errorPh.visibility = View.GONE
-                refreshButtPh.visibility = View.GONE
-                titleHistory.visibility = View.GONE
-                clearHistoryButton.visibility = View.GONE
-                progressBar.visibility = View.GONE
+                recyclerViewTrack.isVisible = true
+                errorPh.isVisible = false
+                refreshButtPh.isVisible = false
+                titleHistory.isVisible = false
+                clearHistoryButton.isVisible = false
+                progressBar.isVisible = false
             }
             is SearchState.HistoryList -> {
                 historyTrackAdapter.tracks = stateType.tracks
                 historyTrackAdapter.notifyDataSetChanged()
                 recyclerViewTrack.adapter = historyTrackAdapter
 
-                recyclerViewTrack.visibility = View.VISIBLE
-                errorPh.visibility = View.GONE
-                refreshButtPh.visibility = View.GONE
-                titleHistory.visibility = View.VISIBLE
-                clearHistoryButton.visibility = View.VISIBLE
-                progressBar.visibility = View.GONE
+                recyclerViewTrack.isVisible = true
+                errorPh.isVisible = false
+                refreshButtPh.isVisible = false
+                titleHistory.isVisible = true
+                clearHistoryButton.isVisible = true
+                progressBar.isVisible = false
             }
         }
 
